@@ -181,10 +181,6 @@ function file_info() {
                         autocomplete_mode = true;
                     }
                 }
-                if((par_field=='video')&&(par_value=='true')) {
-		             video_mode = true;
-                     bbox_mode = true;
-		        }
                 if((par_field=='threed')&&(par_value=='true')) {
                      threed_mode = true;
                 }
