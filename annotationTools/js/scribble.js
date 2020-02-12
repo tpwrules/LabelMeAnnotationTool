@@ -5,9 +5,6 @@ var saveCanvas;
 var saveScribbleCanvas;
 var localop = false;
 //Module.TOTAL_MEMORY = 7108864;
-grabCut = Module.cwrap(
-    'grabCut', 'string', ['number', 'number', 'number', 'number', 'number']
-);
 
 // Indicates whether we are in segmentation or polygon mode
 drawing_mode = 0;

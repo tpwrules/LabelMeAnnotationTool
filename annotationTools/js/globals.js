@@ -48,7 +48,7 @@ var drawing_mode = 0;
 var showImgName = false;
 
 // Scribble mode:
-var scribble_mode = true;
+var scribble_mode = false;
 var threed_mode = false;
 var video_mode = false;
 var bounding_box = false;

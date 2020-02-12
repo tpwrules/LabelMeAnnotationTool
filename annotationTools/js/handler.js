@@ -48,16 +48,11 @@ function handler() {
     this.WhatIsThisObjectDeleteButton = function () {
       submission_edited = 0;
       this.QueryToRest();
-      if (scribble_canvas.scribblecanvas) scribble_canvas.cleanscribbles();
     };
     
     // Submits the object label in response to the edit/delete popup bubble.
     this.SubmitEditLabel = function () {
 
-      if (scribble_canvas.scribblecanvas){
-        scribble_canvas.annotationid = -1;
-        scribble_canvas.cleanscribbles();
-      } 
       submission_edited = 1;
       var anno = select_anno;
       
@@ -149,10 +144,6 @@ function handler() {
         selected_poly = -1;
         unselectObjects(); // Perhaps this should go elsewhere...
         StopEditEvent();
-        if (scribble_canvas.scribblecanvas){
-          scribble_canvas.annotationid = -1;
-          scribble_canvas.cleanscribbles();
-        } 
     };
     
     // Handles when the user clicks on the link for an annotation.
@@ -297,38 +288,7 @@ function handler() {
           html_str += '</type>'
         } 
       if(anno.GetType() == 1) {
-        
-        
-	/*************************************************************/
-	/*************************************************************/
-	// Scribble: Add annotation to LM_xml:
-	html_str += '<segm>';
-	html_str += '<username>' + username + '</username>';
-	
-	html_str += '<box>';
-	html_str += '<xmin>' + scribble_canvas.object_corners[0] + '</xmin>'; 
-	html_str += '<ymin>' + scribble_canvas.object_corners[1] + '</ymin>';
-	html_str += '<xmax>' + scribble_canvas.object_corners[2] + '</xmax>'; 
-	html_str += '<ymax>' + scribble_canvas.object_corners[3] + '</ymax>';
-	html_str += '<timefirst>' + draw_anno.time_point[0] + '</timefirst>';
-	html_str += '<timesecond>' + draw_anno.time_point[1] + '</timesecond>';
-	html_str += '</box>';
-	
-	html_str += '<mask>'+ scribble_canvas.image_name +'</mask>';
-	
-	html_str += '<scribbles>';
-	html_str += '<xmin>' + scribble_canvas.image_corners[0] + '</xmin>'; 
-	html_str += '<ymin>' + scribble_canvas.image_corners[1] + '</ymin>';
-	html_str += '<xmax>' + scribble_canvas.image_corners[2] + '</xmax>'; 
-	html_str += '<ymax>' + scribble_canvas.image_corners[3] + '</ymax>';
-	html_str += '<scribble_name>'+ scribble_canvas.scribble_name +'</scribble_name>'; 
-	html_str += '</scribbles>';
-	
-	html_str += '</segm>';
-	html_str += '</object>';
-	$(LM_xml).children("annotation").append($(html_str));
-	/*************************************************************/
-	/*************************************************************/
+
       }
       else {
 	html_str += '<polygon>';
@@ -356,9 +316,6 @@ function handler() {
       /*************************************************************/
       // Scribble: Clean scribbles.
       if(anno.GetType() == 1) {
-      	scribble_canvas.cleanscribbles();
-      	scribble_canvas.scribble_image = "";
-      	scribble_canvas.colorseg = Math.floor(Math.random()*14);
       }
       /*************************************************************/
       /*************************************************************/

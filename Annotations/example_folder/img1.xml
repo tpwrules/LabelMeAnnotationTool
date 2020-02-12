@@ -44,29 +44,30 @@
         <deleted>0</deleted>
         <verified>0</verified>
         <occluded>no</occluded>
-        <attributes/>
         <parts>
             <hasparts/>
             <ispartof/>
         </parts>
         <date>27-Jul-2014 02:58:50</date>
         <id>1</id>
-        <segm>
+        <polygon>
             <username>brussell</username>
-            <box>
-                <xmin>1457</xmin>
-                <ymin>1671.75</ymin>
-                <xmax>1559</xmax>
-                <ymax>1706.75</ymax>
-            </box>
-            <mask>img1_mask_1.png</mask>
-            <scribbles>
-                <xmin>1456</xmin>
-                <ymin>1670.75</ymin>
-                <xmax>1570</xmax>
-                <ymax>1708.25</ymax>
-                <scribble_name>img1_scribble_1.png</scribble_name>
-            </scribbles>
-        </segm>
+            <pt>
+                <x>1457</x>
+                <y>1671.75</y>
+            </pt>
+            <pt>
+                <x>1559</x>
+                <y>1671.75</y>
+            </pt>
+            <pt>
+                <x>1559</x>
+                <y>1706.75</y>
+            </pt>
+            <pt>
+                <x>1457</x>
+                <y>1706.75</y>
+            </pt>
+        </polygon>
     </object>
 </annotation>

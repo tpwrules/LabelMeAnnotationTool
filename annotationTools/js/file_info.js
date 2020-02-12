@@ -170,9 +170,6 @@ function file_info() {
 				if (par_field=='showimgname' && par_value=='true'){
 					showImgName = true;
 				}
-                if((par_field=='scribble')&&(par_value=='true')) {
-		             scribble_mode = true;
-		        }
                 if(par_field=='wordnet'){
                     if(par_value=='false') {
                         autocomplete_mode = false;

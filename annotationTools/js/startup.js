@@ -113,7 +113,6 @@ function LoadAnnotationSuccess(xml) {
       main_canvas.AttachAnnotation(new annotation(pp));
       if (!video_mode && LMgetObjectField(LM_xml, pp, 'x') == null){
         main_canvas.annotations[main_canvas.annotations.length -1].SetType(1);
-        main_canvas.annotations[main_canvas.annotations.length -1].scribble = new scribble(pp);
       }
     }
   }
@@ -151,17 +150,7 @@ function SetAllAnnotationsArray() {
     LMsetObjectField(LM_xml, pp, "id", pp.toString());
 
 
-    /*************************************************************/
-    /*************************************************************/
-    // Scribble: 
-    // Initialize username if empty in the XML file. Check first if we 
-    // have a polygon or a segmentation:
-    if(curr_obj.children("polygon").length == 0) { // Segmentation
-      if(curr_obj.children("segm").children("username").length == 0) {
-        curr_obj.children("segm").append($("<username>anonymous</username>"));
-      }
-    }
-    else if(curr_obj.children("polygon").children("username").length == 0) curr_obj.children("polygon").append($("<username>anonymous</username>"));
+    if(curr_obj.children("polygon").children("username").length == 0) curr_obj.children("polygon").append($("<username>anonymous</username>"));
     /*************************************************************/
     /*************************************************************/
   }
@@ -279,9 +268,6 @@ function FinishStartup() {
 // scribble of the url is true
 function InitializeAnnotationTools(tag_button, tag_canvas){
 
-    if (scribble_mode){
-	 scribble_canvas = new Scribble_canvas(tag_canvas);
-    }
     var html_str = '<div id= "polygonDiv" class="annotatemenu">Polygon<br></br>Tool \
         <button id="polygon" class="labelBtnDraw" type="button" title="Start Polygon" onclick="SetPolygonDrawingMode(false)" > \
         <img id="polygonModeImg" src="Icons/polygon.png"  width="28" height="38" /> \
@@ -295,15 +281,7 @@ function InitializeAnnotationTools(tag_button, tag_canvas){
     html_str += '</div>';
 
     if (!video_mode){
-      html_str += '<div id= "segmDiv" class="annotatemenu">Mask<br></br>Tool \
-        <button id="ScribbleObj" class="labelBtnDraw" type="button" title="Use the red pencil to mark areas inside the object you want to segment" onclick="scribble_canvas.setCurrentDraw(OBJECT_DRAWING)" > \
-        <img src="Icons/object.png" width="28" height="38" /></button> \
-        <button id="ScribbleBg" class="labelBtnDraw" type="button" title="Use the blue pencil to mark areas outside the object" onclick="scribble_canvas.setCurrentDraw(BG_DRAWING)" > \
-        <img src="Icons/background.png" width="28" height="38" /></button> \
-        <button id="ScribbleRubber" class="labelBtnDraw" type="button" title="ScribbleRubber" onclick="scribble_canvas.setCurrentDraw(RUBBER_DRAWING)" > \
-        <img src="Icons/erase.png" width="28" height="38" /> \
-        </button><input type="button" class="segbut"  id="donebtn" value="Done" title="Press this button after you are done with the scribbling." onclick="scribble_canvas.segmentImage(1)"/> \
-        <p> </p><div id="loadspinner" style="display: none;"><img src="Icons/segment_loader.gif"/> </div></div>';
+
      
 
       var html_str2 = '<button xmlns="http://www.w3.org/1999/xhtml" id="img_url" class="labelBtn" type="button" title="Download Pack" onclick="javascript:GetPackFile();"> \

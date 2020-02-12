@@ -237,7 +237,7 @@ function annotation(anno_id) {
         /*************************************************************/
         // Scribble: Finally we remove the segmentation mask if there was any
         //var id = 'object'+($('#'+'myCanvas_bg').children().length)+"_mask";
-        ClearMask(this.mask_id);
+        //ClearMask(this.mask_id);
         /*************************************************************/
         /*************************************************************/
       
@@ -291,7 +291,7 @@ function annotation(anno_id) {
         else {
             // If we have a segmentation we clear it from the canvas
             //var id = 'object'+($('#'+this.div_attach).children().length-1)+"_mask";
-            ClearMask(this.mask_id);
+            //ClearMask(this.mask_id);
         }
         /*************************************************************/
         /*************************************************************/
