@@ -354,6 +354,7 @@ function file_info() {
                 im_req.send('');
             }
         }
+        im_req.overrideMimeType("text/xml");
         if(im_req.status==200) {
             this.dir_name = im_req.responseXML.getElementsByTagName("dir")[0].firstChild.nodeValue;
             this.im_name = im_req.responseXML.getElementsByTagName("file")[0].firstChild.nodeValue;
@@ -382,6 +383,7 @@ function file_info() {
                 im_req.send('');
             }
         }
+        im_req.overrideMimeType("text/xml");
         if(im_req.status==200) {
             this.dir_name = im_req.responseXML.getElementsByTagName("dir")[0].firstChild.nodeValue;
             this.im_name = im_req.responseXML.getElementsByTagName("file")[0].firstChild.nodeValue;
@@ -405,6 +407,7 @@ function file_info() {
                 im_req.open("GET", url, true);
             }
         }
+        im_req.overrideMimeType("text/xml");
 	console.log('prefetching')
 	im_req.onload = function(e){
 		if(im_req.status==200) {
