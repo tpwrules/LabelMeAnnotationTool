@@ -47,7 +47,7 @@ function RenderObjectList() {
   }
 
   // Add parts-of drag-and-drop functionality:
-  if(use_parts) {
+  if(false) {
     html_str += '<p style="font-size:10px;line-height:100%" ondrop="drop(event, -1)" ondragenter="return dragEnter(event)" ondragover="return dragOver(event)">Drag a tag on top of another one to create a part-of relationship.</p>';
   }
   html_str += '<ol>';
@@ -72,13 +72,15 @@ function RenderObjectList() {
       
       html_str += '<div class="objectListLink" id="LinkAnchor' + ii + '" style="z-index:1; margin-left:'+ (level*1.5) +'em" ';
       
-      if (use_parts) {
+      if (false) {
 	// define drag events (but only if the tool is allowed to use parts)
 	html_str += 'draggable="true" ondragstart="drag(event, '+ii+')" '+
 	  'ondragend="dragend(event, '+ii+')" '+
 	  'ondrop="drop(event, '+ii+')" '+
 	  'ondragenter="return dragEnter(event)" '+
 	  'ondragover="return dragOver(event)">';
+      } else {
+        html_str += '>';
       }
       
       // change the icon for parts
@@ -97,7 +99,7 @@ function RenderObjectList() {
 	'onmouseover="main_handler.AnnotationLinkMouseOver('+ii+');" ' +
 	'onmouseout="main_handler.AnnotationLinkMouseOut();" ';
       
-      if (use_parts) {
+      if (false) {
 	html_str += 'ondrop="drop(event, '+ii+')" '+
 	  'ondragend="dragend(event, '+ii+')" '+
 	  'ondragenter="return dragEnter(event)" '+

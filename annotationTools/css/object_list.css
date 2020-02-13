@@ -41,11 +41,11 @@
     overflow-y:auto;
 }
 
-.objectListLink {
+/*.objectListLink {
     -moz-user-select:none;
     	-khtml-user-drag: element;
     cursor: move;
-}
+}*/
 
 .objectListLink:-webkit-drag {
     background-color:rgb(50,255,50)
