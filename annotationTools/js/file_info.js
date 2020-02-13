@@ -338,16 +338,17 @@ function file_info() {
         if (window.XMLHttpRequest) {
             im_req = new XMLHttpRequest();
             im_req.open("GET", url, false);
+            im_req.overrideMimeType("text/xml");
             im_req.send('');
         }
         else if (window.ActiveXObject) {
             im_req = new ActiveXObject("Microsoft.XMLHTTP");
             if (im_req) {
                 im_req.open("GET", url, false);
+                im_req.overrideMimeType("text/xml");
                 im_req.send('');
             }
         }
-        im_req.overrideMimeType("text/xml");
         if(im_req.status==200) {
             this.dir_name = im_req.responseXML.getElementsByTagName("dir")[0].firstChild.nodeValue;
             this.im_name = im_req.responseXML.getElementsByTagName("file")[0].firstChild.nodeValue;
@@ -367,16 +368,17 @@ function file_info() {
         if (window.XMLHttpRequest) {
             im_req = new XMLHttpRequest();
             im_req.open("GET", url, false);
+            im_req.overrideMimeType("text/xml");
             im_req.send('');
         }
         else if (window.ActiveXObject) {
             im_req = new ActiveXObject("Microsoft.XMLHTTP");
             if (im_req) {
                 im_req.open("GET", url, false);
+                im_req.overrideMimeType("text/xml");
                 im_req.send('');
             }
         }
-        im_req.overrideMimeType("text/xml");
         if(im_req.status==200) {
             this.dir_name = im_req.responseXML.getElementsByTagName("dir")[0].firstChild.nodeValue;
             this.im_name = im_req.responseXML.getElementsByTagName("file")[0].firstChild.nodeValue;
