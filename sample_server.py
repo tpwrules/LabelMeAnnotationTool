@@ -35,24 +35,19 @@ b"""<annotation>
             <pt>
                 <x>1458</x>
                 <y>1647</y>
-                <time>13-02-20 12:40:48:376</time>
             </pt>
             <pt>
                 <x>1458</x>
                 <y>1700</y>
-                <time>13-02-20 12:40:48:753</time>
             </pt>
             <pt>
                 <x>1595</x>
                 <y>1700</y>
-                <time>13-02-20 12:40:49:172</time>
             </pt>
             <pt>
                 <x>1590</x>
                 <y>1660</y>
-                <time>13-02-20 12:40:49:575</time>
             </pt>
-            <closed_date>13-02-20 12:40:50:218</closed_date>
         </polygon>
     </object>
     <object>
@@ -71,24 +66,19 @@ b"""<annotation>
             <pt>
                 <x>1867</x>
                 <y>1159</y>
-                <time>13-02-20 12:40:54:044</time>
             </pt>
             <pt>
                 <x>2410</x>
                 <y>20</y>
-                <time>13-02-20 12:40:54:961</time>
             </pt>
             <pt>
                 <x>2483</x>
                 <y>13</y>
-                <time>13-02-20 12:40:55:542</time>
             </pt>
             <pt>
                 <x>1986</x>
                 <y>1832</y>
-                <time>13-02-20 12:40:56:565</time>
             </pt>
-            <closed_date>13-02-20 12:40:57:110</closed_date>
         </polygon>
     </object>
     <private>
@@ -191,6 +181,7 @@ class Handler(BaseHTTPRequestHandler):
             global annotation_xml
             annotation_xml = \
                 self.rfile.read(int(self.headers["Content-Length"]))
+            print(annotation_xml)
             self.send_data(b"<nop/>")
         else:
             self.send_error(404)

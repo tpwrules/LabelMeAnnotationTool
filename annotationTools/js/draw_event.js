@@ -4,7 +4,7 @@ var draw_anno = null;
 var query_anno = null;
 
 function get_date(){
-
+/*
   var currentdate = new Date(); 
   var datetime =  ('0'+currentdate.getDate()).slice(-2) + "-"
                   + ('0'+(currentdate.getMonth()+1)).slice(-2)  + "-" 
@@ -13,7 +13,8 @@ function get_date(){
                   + ('0'+currentdate.getMinutes()).slice(-2) + ":" 
                   + ('0'+currentdate.getSeconds()).slice(-2) + ":"
                   + ("00"+currentdate.getMilliseconds()).slice(-3);
-  return datetime;
+  return datetime;*/
+  return ""
 }
 
 /** This function is called with the draw event is started.  It can be 

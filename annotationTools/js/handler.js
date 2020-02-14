@@ -279,8 +279,8 @@ function handler() {
 	html_str += '<attributes>' + new_attributes + '</attributes>';
       }
       html_str += '<parts><hasparts></hasparts><ispartof></ispartof></parts>';
-      var ts = GetTimeStamp();
-      if(ts.length==20) html_str += '<date>' + ts + '</date>';
+      //var ts = GetTimeStamp();
+      //if(ts.length==20) html_str += '<date>' + ts + '</date>';
       html_str += '<id>' + anno.anno_id + '</id>';
       if (bounding_box){
           html_str += '<type>'
@@ -297,10 +297,10 @@ function handler() {
 	  html_str += '<pt>';
 	  html_str += '<x>' + draw_x[jj] + '</x>';
 	  html_str += '<y>' + draw_y[jj] + '</y>';
-	  html_str += '<time>' + anno.time_point[jj] + '</time>';
+	  //html_str += '<time>' + anno.time_point[jj] + '</time>';
 	  html_str += '</pt>';
 	}
-	html_str += '<closed_date>' + anno.closing_time + '</closed_date>';
+	//html_str += '<closed_date>' + anno.closing_time + '</closed_date>';
 	html_str += '</polygon>';
 	html_str += '</object>';
 	$(LM_xml).children("annotation").append($(html_str));
