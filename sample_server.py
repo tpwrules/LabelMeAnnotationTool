@@ -11,27 +11,51 @@ b"""<out>
 
 annotation_xml = \
 b"""<annotation>
-<cool_tag>69</cool_tag>
+    <!-- their code only edits the tree, it doesn't actually rebuild it.
+        so we can put in arbitrary tags for our own porpoises and they will get
+        preserved. (i've prefixed them with c_) -->
+    <!-- annotation ID in database -->
+    <c_anno_id>69</c_anno_id>
+    <!-- ?? -->
     <filename>img1.jpg</filename>
     <folder>example_folder</folder>
-    <source>
-        <sourceImage>The MIT-CSAIL database of objects and scenes</sourceImage>
-        <sourceAnnotation>LabelMe Webtool</sourceAnnotation>
-    </source>
+    <!-- one object tag per polygon -->
     <object>
+        <!-- polygon ID in database -->
+        <c_poly_id>420</c_poly_id>
+        <!-- object label. idk yet how to select from a list. will need to be
+            mapped to label id in db -->
         <name>licnese plate</name>
+        <!-- if the object is deleted and should not show up. should always
+            be 0; just don't transmit deleted objects -->
         <deleted>0</deleted>
+        <!-- if the object is 'verified'. if this is set, attempting to
+            manipulate the polygon gives a "this is blocked" message. should
+            be set to 1 for locked polygons -->
         <verified>0</verified>
+        <!-- yes/no if occluded. map to database flag -->
         <occluded>no</occluded>
-        <attributes/>
+        <!-- attribute box. map to notes field in db. -->
+        <attributes></attributes>
+        <!-- this object's relationship to others. i've disabled the ability
+            to configure this. it does not need to be transmitted and can be
+            discarded on reception. -->
         <parts>
             <hasparts/>
             <ispartof/>
         </parts>
+        <!-- index of this object in the file. first is 0, second is 1, etc.
+            automatically gets overwritten by labelme, so you can't store
+            anything useful here. does not need to be transmitted and can be
+            discarded on reception. -->
         <id>0</id>
         <polygon>
-        <cool_tag2>69</cool_tag2>
+            <!-- username of who placed this polygon. this should always be the
+                logged in user so they can edit all the polygons. ignore on
+                reception. -->
             <username>hi</username>
+            <!-- list of points in the polygon. map to points array in db. order
+                is important. -->
             <pt>
                 <x>1458</x>
                 <y>1647</y>
@@ -55,12 +79,12 @@ b"""<annotation>
         <deleted>0</deleted>
         <verified>0</verified>
         <occluded>no</occluded>
-        <attributes/>
+        <attributes></attributes>
         <parts>
             <hasparts/>
             <ispartof/>
         </parts>
-        <id>4</id>
+        <id>1</id>
         <polygon>
             <username>hi</username>
             <pt>
@@ -81,6 +105,8 @@ b"""<annotation>
             </pt>
         </polygon>
     </object>
+    <!-- sent back to sort of audit what happens? doesn't need to be transmitted
+        and can be discarded on reception. -->
     <private>
         <global_count>2</global_count>
         <pri_username>hi</pri_username>
@@ -178,7 +204,7 @@ class Handler(BaseHTTPRequestHandler):
             global annotation_xml
             annotation_xml = \
                 self.rfile.read(int(self.headers["Content-Length"]))
-            print(annotation_xml)
+            print(annotation_xml.decode("ascii"))
             self.send_data(b"<nop/>")
         else:
             self.send_error(404)
