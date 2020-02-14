@@ -168,6 +168,8 @@ function SetAllAnnotationsArray() {
 
 /** Annotation file does not exist, so load template. */
 function LoadAnnotation404(jqXHR,textStatus,errorThrown) {
+  alert("annotations could not be loaded");
+  /*
   if(jqXHR.status==404) 
     ReadXML(main_media.GetFileInfo().GetTemplatePath(),LoadTemplateSuccess,LoadTemplate404);
   else if (jqXHR.status == 200){
@@ -179,21 +181,23 @@ function LoadAnnotation404(jqXHR,textStatus,errorThrown) {
   }
   else 
     alert(jqXHR.status);
+  */
 }
 
 /** Annotation template does not exist for this folder, so load default */
-function LoadTemplate404(jqXHR,textStatus,errorThrown) {
+/*function LoadTemplate404(jqXHR,textStatus,errorThrown) {
   if(jqXHR.status==404)
     ReadXML('annotationCache/XMLTemplates/labelme.xml',LoadTemplateSuccess,function(jqXHR) {
   alert(jqXHR.status);
       });
   else
     alert(jqXHR.status);
-}
+}*/
 
 /** Actions after template load success 
   * @param {string} xml - the xml regarding the current file
 */
+/*
 function LoadTemplateSuccess(xml) {
   // Set global variable:
   LM_xml = xml;
@@ -207,7 +211,7 @@ function LoadTemplateSuccess(xml) {
 
   // Finish the startup scripts:
   FinishStartup();
-}
+}*/
 
 /** Finish the startup process: */
 function FinishStartup() {

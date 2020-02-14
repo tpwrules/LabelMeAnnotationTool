@@ -165,9 +165,6 @@ class Handler(BaseHTTPRequestHandler):
             return "file", file_path, query_params
         elif path_parts[0] == "Annotations":
             return "anno", "/".join(path_parts[1:]), query_params
-        elif path_parts[0] == "annotationCache":
-            # why does it need stuff from here?
-            return "file", file_path, query_params
         return "404", "", query_params
 
     def get_cgi(self, path, params):
