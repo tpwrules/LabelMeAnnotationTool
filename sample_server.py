@@ -5,7 +5,7 @@ import mimetypes
 
 fetch_image_example = \
 b"""<out>
-    <dir>/example_folder</dir>
+    <dir>f</dir>
     <file>img2.jpg</file>
 </out>"""
 
@@ -16,9 +16,11 @@ b"""<annotation>
         preserved. (i've prefixed them with c_) -->
     <!-- annotation ID in database -->
     <c_anno_id>69</c_anno_id>
-    <!-- ?? -->
+    <!-- name of the image to retrieve. probably best to do like
+        i<database id>.jpg -->
     <filename>img1.jpg</filename>
-    <folder>example_folder</folder>
+    <!-- folder image is in. we don't care; just keep as f -->
+    <folder>f</folder>
     <!-- one object tag per polygon -->
     <object>
         <!-- polygon ID in database -->
