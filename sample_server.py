@@ -187,10 +187,7 @@ class Handler(BaseHTTPRequestHandler):
             self.send_error(404)
 
     def post_cgi(self, path, params):
-        if path == "write_logfile.cgi":
-            print(self.rfile.read(int(self.headers["Content-Length"])))
-            self.send_data(b"<nop/>")
-        elif path == "submit.cgi":
+        if path == "submit.cgi":
             global annotation_xml
             annotation_xml = \
                 self.rfile.read(int(self.headers["Content-Length"]))

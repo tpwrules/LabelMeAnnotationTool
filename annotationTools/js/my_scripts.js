@@ -50,7 +50,7 @@ function IsCreator(u) {
 
 
 function WriteLogMsg(msg) {
-  var url = 'annotationTools/perl/write_logfile.cgi';
+  /*var url = 'annotationTools/perl/write_logfile.cgi';
   var req_submit;
   // branch for native XMLHttpRequest object
   if (window.XMLHttpRequest) {
@@ -64,7 +64,7 @@ function WriteLogMsg(msg) {
       req_submit.open("POST", url, true);
       req_submit.send(msg);
     }
-  }
+  }*/
 }
 
 // This function gets called when the user clicks on the "Next image" button.
