@@ -33,8 +33,8 @@ function file_info() {
      * URL has collection, directory, and filename information.
     */
     this.ParseURL = function () {
-        var labelme_url = document.URL;
-        var idx = labelme_url.indexOf('?');
+        var labelme_url = window.location.hash;
+        var idx = 0;
         if((idx != -1) && (this.page_in_use == 0)) {
             this.page_in_use = 1;
             var par_str = labelme_url.substring(idx+1,labelme_url.length);
