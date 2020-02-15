@@ -28,6 +28,8 @@ function WriteXML(url,xml_data,SuccessFunction,ErrorFunction) {
     error: function(xhr,ajaxOptions,thrownError) {
       console.log(xhr.status);          
       console.log(thrownError);
+      alert("an inconsistency has been detected. the annotations will now be reloaded from the server.");
+      LoadNewMedia();
     }
   });
 }
