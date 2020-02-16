@@ -42,14 +42,15 @@ function image(id) {
         document.getElementById('loading').style.visibility = 'visible';
         if(IsMicrosoft()) this.im.style.visibility = 'hidden';
         else this.im.style.display = 'none';
-        this.image =  new Image();
+        //this.image =  new Image();
+        this.image = this.im;
         
-        this.image.src  =  this.file_info.GetImagePath();
-        this.image.onload = function (){
+        this.im.src  =  this.file_info.GetImagePath();
+        this.im.onload = function (){
             onload_helper();
-            main_media.contrast = 128;
-            main_media.im.getContext('2d').drawImage(main_media.image,0,0,main_media.width_curr, main_media.height_curr);
-            main_media.DisplayWithContrast(main_media.contrast);
+            //main_media.contrast = 128;
+            //main_media.im.getContext('2d').drawImage(main_media.image,0,0,main_media.width_curr, main_media.height_curr);
+            //main_media.DisplayWithContrast(main_media.contrast);
         }
         wait_for_input = 0;
         edit_popup_open = 0;
@@ -310,6 +311,7 @@ function image(id) {
         this.DisplayWithContrast(this.contrast);
     }
 	this.DisplayWithContrast = function(alpha){
+        return;
 		var data_im = this.ObtainImagePixels();
         var data = data_im.data;
 		for (var i = 0; i < data.length; i+=4){
