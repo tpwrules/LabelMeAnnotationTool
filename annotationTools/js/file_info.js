@@ -182,7 +182,7 @@ function file_info() {
                      threed_mode = true;
                 }
                 if((par_field=='bbox')&&(par_value=='true')) {
-                  bbox_mode = true;
+                  bbox_mode = false;
                 }
                 par_str = par_str.substring(idx+1,par_str.length);
             } while(idx != -1);
