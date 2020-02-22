@@ -284,10 +284,10 @@ function image(id) {
         var scrollLeft = $("#main_media").scrollLeft();
         var scrollTop = $("#main_media").scrollTop();
         
-        if(((x*this.im_ratio < scrollLeft) ||
-            (x*this.im_ratio - scrollLeft > this.curr_frame_width - 160)) || 
-           ((y*this.im_ratio < scrollTop) || 
-            (y*this.im_ratio - scrollTop > this.curr_frame_height))) 
+        if(((x < scrollLeft) ||
+            (x - scrollLeft > this.curr_frame_width - 160)) || 
+           ((y < scrollTop) || 
+            (y - scrollTop > this.curr_frame_height))) 
             return false;  //the 160 is about the width of the right-side div
         return true;
     };
