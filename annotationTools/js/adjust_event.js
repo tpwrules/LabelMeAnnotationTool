@@ -86,8 +86,12 @@ function AdjustEvent(dom_attach,x,y,obj_name,ExitFunction,scale, bounding_box_an
 
     $('#'+this.dom_attach).unbind();
     $('#'+this.dom_attach).mousedown({obj: this},function(e) {
-      return e.data.obj.StopAdjustEvent();
-      });
+      if (e.which == 1) {
+        return e.data.obj.StopAdjustEvent();
+      } else if (e.which == 3) {
+        return e.data.obj.AddControlPoint(e.originalEvent);
+      }
+    });
 
     // Lower opacity of the rest of elements
 
@@ -144,6 +148,27 @@ function AdjustEvent(dom_attach,x,y,obj_name,ExitFunction,scale, bounding_box_an
     }
     
     if (video_mode) $('#myCanvas_bg').css('opacity', 1);
+
+    // remove any duplicate points the user accidentally made
+    var curr_pt = 0;
+    while (curr_pt < this.x.length) {
+      var x0 = this.x[curr_pt]
+      var y0 = this.y[curr_pt]
+      var x1 = this.x[(curr_pt+1)%this.x.length]
+      var y1 = this.y[(curr_pt+1)%this.x.length]
+
+      // give the user a centipixel of leeway
+      if ((Math.abs(x1-x0) > 1e-2) || (Math.abs(y1-y0) > 1e-2)){
+        // the points are not the same. check the next one
+        curr_pt += 1;
+      } else {
+        // the points are the same. remove the current one, as it's the same
+        // as the next one.
+        this.x.splice(curr_pt, 1);
+        this.y.splice(curr_pt, 1);
+      }
+    }
+
     // Call exit function:
 
     this.ExitFunction(this.x,this.y,this.editedControlPoints);
@@ -178,7 +203,11 @@ function AdjustEvent(dom_attach,x,y,obj_name,ExitFunction,scale, bounding_box_an
       
       // Set action:
       $('#'+this.control_ids[i]).mousedown({obj: this,point: i},function(e) {
-         return e.data.obj.StartMoveControlPoint(e.data.point);
+        if (e.which == 1) {
+          return e.data.obj.StartMoveControlPoint(e.data.point);
+        } else if (e.which == 3) {
+          return e.data.obj.DeleteControlPoint(e.data.point);
+        }
       });
     }
   };
@@ -297,7 +326,11 @@ function AdjustEvent(dom_attach,x,y,obj_name,ExitFunction,scale, bounding_box_an
       // Set action:
       $('#'+this.dom_attach).unbind();
       $('#'+this.dom_attach).mousedown({obj: this},function(e) {
-        return e.data.obj.StopAdjustEvent();
+        if (e.which == 1) {
+          return e.data.obj.StopAdjustEvent();
+        } else if (e.which == 3) {
+          return e.data.obj.AddControlPoint(e.originalEvent);
+        }
       });
 
     }
@@ -367,10 +400,117 @@ function AdjustEvent(dom_attach,x,y,obj_name,ExitFunction,scale, bounding_box_an
       // Set action:
       $('#'+this.dom_attach).unbind();
       $('#'+this.dom_attach).mousedown({obj: this},function(e) {
-        return e.data.obj.StopAdjustEvent();
+        if (e.which == 1) {
+          return e.data.obj.StopAdjustEvent();
+        } else if (e.which == 3) {
+          return e.data.obj.AddControlPoint(e.originalEvent);
+        }
       });
 
     }
+  };
+
+  this.AddControlPoint = function(event) {
+    // where the mouse was right clicked
+    var mx = GetEventPosX(event);
+    var my = GetEventPosY(event);
+    // converted to image coordinates
+    mx = Math.max(Math.min(Math.round(mx/this.scale),main_media.width_orig),1);
+    my = Math.max(Math.min(Math.round(my/this.scale),main_media.height_orig),1);
+
+    // we want to add the point to the segment that is closest to the mouse.
+    // so, we need to find that segment.
+    // (thanks Joshua! https://stackoverflow.com/a/6853926)
+    var closest_seg = 0;
+    var seg_dist = Infinity;
+    var pt_x;
+    var pt_y;
+    for (var pi=0; pi<this.x.length; pi++) {
+      // get the start and end point of this segment
+      var sx1 = this.x[pi];
+      var sy1 = this.y[pi];
+      var sx2 = this.x[(pi+1)%this.x.length];
+      var sy2 = this.y[(pi+1)%this.x.length];
+      // project the mouse click onto the line segment and calculate
+      // projection distance: how far along the line the projected point is
+      var A = mx-sx1;
+      var B = my-sy1;
+      var C = sx2-sx1;
+      var D = sy2-sy1;
+
+      var dot = A*C + B*D;
+      var len_sq = C*C + D*D;
+      var line_pos = -1;
+      if (len_sq > 0) line_pos = dot / len_sq;
+
+      var lx, ly;
+      if (line_pos <= 0) {
+        // can't be before the start of the line
+        lx = sx1;
+        ly = sy1;
+      } else if (line_pos >= 1) {
+        // can't be after the end of the line
+        lx = sx2;
+        ly = sy2;
+      } else {
+        lx = sx1 + line_pos*C;
+        ly = sy1 + line_pos*D;
+      }
+
+      var dx = mx-lx;
+      var dy = my-ly;
+      var dist = Math.sqrt(dx*dx + dy*dy);
+
+      if (dist < seg_dist) {
+        // this segment has a point closer to the mouse than any previous
+        seg_dist = dist;
+        closest_seg = (pi+1)%this.x.length;
+        pt_x = lx;
+        pt_y = ly;
+      }
+    }
+
+    // make sure the user is clicking roughly on the line
+    if (seg_dist > 5/this.scale) {
+      // let another handler do something
+      return true;
+    }
+
+    // completely throw away the polygon
+    $('#'+this.polygon_id).parent().remove();
+    this.RemoveControlPoints();
+    this.RemoveCenterOfMass();
+    // insert the new point
+    this.x.splice(closest_seg, 0, pt_x);
+    this.y.splice(closest_seg, 0, pt_y);
+    // and make the new polygon appear
+    this.polygon_id = this.DrawPolygon(this.dom_attach,this.x,this.y,this.obj_name,this.scale);
+    select_anno.polygon_id = this.polygon_id;
+    this.ShowControlPoints();
+    this.ShowCenterOfMass();
+    FillPolygon(this.polygon_id);
+    this.editedControlPoints = true;
+    // don't handle anything further
+    return false;
+  }
+
+  this.DeleteControlPoint = function(i) {
+    // completely throw away the polygon
+    $('#'+this.polygon_id).parent().remove();
+    this.RemoveControlPoints();
+    this.RemoveCenterOfMass();
+    // remove the point in question
+    this.x.splice(i, 1);
+    this.y.splice(i, 1);
+    // then make the new polygon appear
+    this.polygon_id = this.DrawPolygon(this.dom_attach,this.x,this.y,this.obj_name,this.scale);
+    select_anno.polygon_id = this.polygon_id;
+    this.ShowControlPoints();
+    this.ShowCenterOfMass();
+    FillPolygon(this.polygon_id);
+    this.editedControlPoints = true;
+    // don't handle anything further
+    return false;
   };
 
   /** This function is called when the middle grab point is clicked
@@ -463,7 +603,11 @@ function AdjustEvent(dom_attach,x,y,obj_name,ExitFunction,scale, bounding_box_an
       // Set action:
       $('#'+this.dom_attach).unbind();
       $('#'+this.dom_attach).mousedown({obj: this},function(e) {
-        return e.data.obj.StopAdjustEvent();
+        if (e.which == 1) {
+          return e.data.obj.StopAdjustEvent();
+        } else if (e.which == 3) {
+          return e.data.obj.AddControlPoint(e.originalEvent);
+        }
       });
 
     }

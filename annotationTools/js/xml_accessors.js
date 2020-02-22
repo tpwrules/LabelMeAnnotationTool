@@ -130,8 +130,21 @@ function LMsetObjectField(xml, ind_object, name, value){
 			obj.children("polygon").children(name).text(value);
 		}
 		else {
-			for (var ii = 0; ii < value.length; ii++){
-				obj.children("polygon").children("pt").eq(ii).children(name).text(value[ii]);
+            var pts = obj.children("polygon");
+            var num_in = value.length;
+            var num_pts = pts.children("pt").length;
+            if (num_pts < num_in) {
+                for (var i=num_pts; i < num_in; i++) {
+                    pts.append($("<pt><x>0</x><y>0</y></pt>"));
+                }
+            }
+            if (num_pts > num_in) {
+                for (var i=num_pts-1; i >= num_in; i--) {
+                    pts.children("pt").eq(i).remove();
+                }
+            }
+			for (var ii = 0; ii < num_in; ii++){
+				pts.children("pt").eq(ii).children(name).text(value[ii]);
 			}			   	
 		}
 	}
