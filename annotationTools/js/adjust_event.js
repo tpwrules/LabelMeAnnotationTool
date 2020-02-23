@@ -200,7 +200,8 @@ function AdjustEvent(dom_attach,x,y,obj_name,ExitFunction,scale, bounding_box_an
     if(!this.control_ids) this.control_ids = new Array();
     for(var i = 0; i < this.x.length; i++) {
       // Draw control point:
-      this.control_ids.push(DrawPoint(this.dom_attach,this.x[i],this.y[i],'r="5" fill="#00ff00" stroke="#ffffff" stroke-width="2.5"',this.scale));
+      this.control_ids.push(DrawPoint(this.dom_attach,this.x[i],this.y[i],
+        'r="5" fill="#00ff00" stroke="#ffffff" stroke-width="2.5" style="cursor:pointer;"',this.scale));
       
       // Set action:
       $('#'+this.control_ids[i]).mousedown({obj: this,point: i},function(e) {
@@ -230,7 +231,8 @@ function AdjustEvent(dom_attach,x,y,obj_name,ExitFunction,scale, bounding_box_an
     this.CenterOfMass(this.x,this.y);
     
     // Draw center point:
-    this.center_id = DrawPoint(this.dom_attach,this.center_x,this.center_y,'r="' + MarkerSize + '" fill="red" stroke="#ffffff" stroke-width="' + MarkerSize/2 + '"',this.scale);
+    this.center_id = DrawPoint(this.dom_attach,this.center_x,this.center_y,
+      'r="' + MarkerSize + '" fill="red" stroke="#ffffff" stroke-width="' + MarkerSize/2 + '" style="cursor:pointer;"',this.scale);
     
     // Set action:
     $('#'+this.center_id).mousedown({obj: this},function(e) {
