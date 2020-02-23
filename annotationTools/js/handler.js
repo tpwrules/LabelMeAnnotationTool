@@ -303,7 +303,7 @@ function handler() {
 	//html_str += '<closed_date>' + anno.closing_time + '</closed_date>';
 	html_str += '</polygon>';
 	html_str += '</object>';
-	$(LM_xml).children("annotation").append($(html_str));
+	LM_xml_c.append($(html_str));
       }
       
       

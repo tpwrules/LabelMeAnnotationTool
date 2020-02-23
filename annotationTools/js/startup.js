@@ -195,6 +195,7 @@ function LoadAnnotationSuccess(xml) {
 
   // Set global variable:
   LM_xml = xml;
+  LM_xml_c = $(LM_xml).children("annotation");
 
   // Set AllAnnotations array:
   SetAllAnnotationsArray();
@@ -236,7 +237,7 @@ function SetAllAnnotationsArray() {
   console.time('initialize XML');
   // Initialize any empty tags in the XML file:
   for(var pp = 0; pp < num_obj; pp++) {
-    var curr_obj = $(LM_xml).children("annotation").children("object").eq(pp);
+    var curr_obj = LM_xml_c.children("object").eq(pp);
 
     // Initialize object name if empty in the XML file:
     if(curr_obj.children("name").length == 0) LMsetObjectField(LM_xml, pp, "name","");

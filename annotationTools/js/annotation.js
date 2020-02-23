@@ -64,31 +64,31 @@ function annotation(anno_id) {
         /*************************************************************/
         /*************************************************************/
         // Scribble: When this.anno_type==1:
-        if (this.anno_type == 1) return $(LM_xml).children("annotation").children("object").eq(this.anno_id).children("segm").children("username").text();
-        else return $(LM_xml).children("annotation").children("object").eq(this.anno_id).children("polygon").children("username").text();
+        if (this.anno_type == 1) return LM_xml_c.children("object").eq(this.anno_id).children("segm").children("username").text();
+        else return LM_xml_c.children("object").eq(this.anno_id).children("polygon").children("username").text();
         /*************************************************************/
         /*************************************************************/
     };
     
     this.GetAutomatic = function() {
-        if($(LM_xml).children("annotation").children("object").eq(this.anno_id).children("automatic").length > 0) {
-            return parseInt($(LM_xml).children("annotation").children("object").eq(this.anno_id).children("automatic").text());
+        if(LM_xml_c.children("object").eq(this.anno_id).children("automatic").length > 0) {
+            return parseInt(LM_xml_c.children("object").eq(this.anno_id).children("automatic").text());
         }
         return 0;
     };
     
     this.GetDeleted = function () {
-        return parseInt($(LM_xml).children("annotation").children("object").eq(this.anno_id).children("deleted").text());
+        return parseInt(LM_xml_c.children("object").eq(this.anno_id).children("deleted").text());
     };
     
     this.GetVerified = function () {
-        return parseInt($(LM_xml).children("annotation").children("object").eq(this.anno_id).children("verified").text());
+        return parseInt(LM_xml_c.children("object").eq(this.anno_id).children("verified").text());
     };
     
     this.GetParts = function() {
         parts = [];
-        if ($(LM_xml).children("annotation").children("object").eq(this.anno_id).children("parts").length>0) {
-            tmp = $(LM_xml).children("annotation").children("object").eq(this.anno_id).children("parts").children("hasparts").text();
+        if (LM_xml_c.children("object").eq(this.anno_id).children("parts").length>0) {
+            tmp = LM_xml_c.children("object").eq(this.anno_id).children("parts").children("hasparts").text();
             if (tmp.length>0) {
                 // if it is not empty, split and trasnform to numbers
                 parts = tmp.split(",");

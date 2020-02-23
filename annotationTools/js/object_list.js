@@ -149,7 +149,7 @@ function RemoveObjectList() {
 
 function ChangeLinkColorBG(idx) {
   if(document.getElementById('Link'+idx)) {
-    var isDeleted = parseInt($(LM_xml).children("annotation").children("object").eq(idx).children("deleted").text());
+    var isDeleted = parseInt(LM_xml_c.children("object").eq(idx).children("deleted").text());
     if(isDeleted) document.getElementById('Link'+idx).style.color = '#888888';
     else document.getElementById('Link'+idx).style.color = '#0000FF';
     var anid = main_canvas.GetAnnoIndex(idx);

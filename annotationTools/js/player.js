@@ -116,7 +116,7 @@ this.loadFile = function(frame, first_time, isbackground, response) {
         var i1 = selected_object_frames.indexOf(init);
         var i2 = selected_object_frames.indexOf(end);
         console.log(init, end);
-        var obj = $(LM_xml).children("annotation").children("object").eq(select_anno.anno_id);
+        var obj = LM_xml_c.children("object").eq(select_anno.anno_id);
         var pts_x = (obj.children("polygon").children('x').text()).split(';');
         var pts_y = (obj.children("polygon").children('y').text()).split(';');
         if (i1 == -1){
@@ -406,7 +406,7 @@ this.loadFile = function(frame, first_time, isbackground, response) {
     var N = $(xml).children("annotation").children("object").length;
     
     for(var it = 0; it < N; it++) {
-        var del = parseInt($(LM_xml).children("annotation").children("object").eq(it).children("deleted").text());
+        var del = parseInt(LM_xml_c.children("object").eq(it).children("deleted").text());
         if (del) continue;
         var obj = $(xml).children("annotation").children("object").eq(it);
         

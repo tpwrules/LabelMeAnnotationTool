@@ -8,7 +8,7 @@
   * @param {int} frame - frame of interest
 */
 function LMgetObjectField(xml,ind_object, name, frame) {
-	var obj = $(xml).children("annotation").children("object").eq(ind_object);
+	var obj = LM_xml_c.children("object").eq(ind_object);
 	if (obj.length == 0) return "";
 	if (name == 'name' ||  name == 'attributes' || name == 'occluded'){
 		if (!obj.children(name).length > 0) return "";
@@ -106,7 +106,7 @@ function LMgetObjectField(xml,ind_object, name, frame) {
 
 /** Returns number of LabelMe objects. */
 function LMnumberOfObjects(xml) {
-    return xml.getElementsByTagName('object').length;
+    return LM_xml.getElementsByTagName('object').length;
 }
 
 /** Sets a field for an object from an xml. 
@@ -116,7 +116,7 @@ function LMnumberOfObjects(xml) {
   * @param {string} value - value to which the object will be set
 */
 function LMsetObjectField(xml, ind_object, name, value){
-	var obj = $(xml).children("annotation").children("object").eq(ind_object);
+	var obj = LM_xml_c.children("object").eq(ind_object);
 	if (name == 'name' || name == 'automatic' || name == 'attributes' || name == 'occluded' || name == 'deleted' || name == 'id'){
 		if (obj.children(name).length > 0) obj.children(name).text(value);
 		else if (name != 'automatic') obj.append("<"+name+">"+value+"</"+name+">");

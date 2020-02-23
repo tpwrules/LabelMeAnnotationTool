@@ -467,7 +467,7 @@ function video(id) {
     */
     this.UpdateObjectPosition = function (anno, newx, newy){
       var obj_ndx = anno.anno_id;
-      var curr_obj = $(LM_xml).children("annotation").children("object").eq(obj_ndx);
+      var curr_obj = LM_xml_c.children("object").eq(obj_ndx);
       var framestamps = (curr_obj.children("polygon").children("t").text()).split(',');
       var userlabeledframes = (curr_obj.children("polygon").children("userlabeled").text()).split(',');
       var pts_x = (curr_obj.children("polygon").children("x").text()).split(';');
@@ -679,7 +679,7 @@ function video(id) {
         html_str += '<ispartof/>'
         html_str += '</parts>'
         html_str += '</object>';
-        $(LM_xml).children("annotation").append($(html_str));
+        LM_xml_c.append($(html_str));
         //ChangeLinkColorFG(anno.GetAnnoID());
         $('#select_canvas').css('z-index','0');
         $('#select_canvas_div').css('z-index','0');

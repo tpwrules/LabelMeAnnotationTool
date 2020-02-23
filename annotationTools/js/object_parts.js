@@ -43,20 +43,20 @@ function getPartsTree() {
 
 function addPartFields() {
     // makes sure all the annotations have all the fields
-    var Npolygons = $(LM_xml).children("annotation").children("object").length;
+    var Npolygons = LM_xml_c.children("object").length;
         
     for(var obj_i=0; obj_i < Npolygons; obj_i++) {
-        var curr_obj = $(LM_xml).children("annotation").children("object").eq(obj_i);
+        var curr_obj = LM_xml_c.children("object").eq(obj_i);
         
         if (curr_obj.children("parts").length>0) {
             if (!curr_obj.children("parts").children("ispartof").length>0) {
-                $(LM_xml).children("annotation").children("object").eq(obj_i).children("parts").append("<ispartof></ispartof>");
+                LM_xml_c.children("object").eq(obj_i).children("parts").append("<ispartof></ispartof>");
             }
             if (!curr_obj.children("parts").children("hasparts").length>0) {
-                $(LM_xml).children("annotation").children("object").eq(obj_i).children("parts").append("<hasparts></hasparts>");
+                LM_xml_c.children("object").eq(obj_i).children("parts").append("<hasparts></hasparts>");
             }
         } else {
-            $(LM_xml).children("annotation").children("object").eq(obj_i).append("<parts><hasparts></hasparts><ispartof></ispartof></parts>");
+            LM_xml_c.children("object").eq(obj_i).append("<parts><hasparts></hasparts><ispartof></ispartof></parts>");
         }
     }
 }
@@ -72,7 +72,7 @@ function addPart(object_id, part_id) {
     // If part_id is already a part in some other object, remove it from there.
     // A part can only be a children of a single polygon.
     //alertParts("inicio. object="+object_id+", part="+part_id);
-    var Npolygons = $(LM_xml).children("annotation").children("object").length;
+    var Npolygons = LM_xml_c.children("object").length;
     //alert(Npolygons);
     for(var obj_i=0; obj_i < Npolygons; obj_i++) {
         removePart(obj_i, part_id);
@@ -92,7 +92,7 @@ function addPart(object_id, part_id) {
 
         // If all is fine then concatenate to current list of parts.
         // first add it to the has parts list.
-        var curr_obj = $(LM_xml).children("annotation").children("object").eq(object_id);
+        var curr_obj = LM_xml_c.children("object").eq(object_id);
         if (curr_obj.children("parts").length>0) {
             parts = getParts(object_id);
             parts = parts.concat(part_id).sort();
@@ -102,7 +102,7 @@ function addPart(object_id, part_id) {
         }
 
         // Add isPartOf field (one object can only be part of another one):        
-        var curr_part = $(LM_xml).children("annotation").children("object").eq(part_id);
+        var curr_part = LM_xml_c.children("object").eq(part_id);
         if (curr_part.children("parts").length>0) {
             if (curr_part.children("parts").children("ispartof").length>0) {
                 curr_part.children("parts").children("ispartof").text(object_id.toString());
@@ -129,8 +129,8 @@ function removePart(object_id, part_id) {
     //alert("parts="+parts.toString()+"; part to remove="+part_id+"; position="+remove);
     if (remove!=-1) {
         parts.splice(remove, 1);
-        $(LM_xml).children("annotation").children("object").eq(object_id).children("parts").children("hasparts").text(parts.toString());
-        $(LM_xml).children("annotation").children("object").eq(part_id).children("parts").children("ispartof").text("");
+        LM_xml_c.children("object").eq(object_id).children("parts").children("hasparts").text(parts.toString());
+        LM_xml_c.children("object").eq(part_id).children("parts").children("ispartof").text("");
     }
 }
 
@@ -220,7 +220,7 @@ function getNonParts() {
     var nonparts = new Array();
     var listofparts = new Array();
     
-    var Npolygons = $(LM_xml).children("annotation").children("object").length;
+    var Npolygons = LM_xml_c.children("object").length;
     for (var i=0; i<Npolygons; i++) {
         var parts = getParts(i);
         listofparts = listofparts.concat(parts);
@@ -251,7 +251,7 @@ function getParts(object_id){
 
 function getParent(object_id){
     var parent = -1;
-    var curr_obj = $(LM_xml).children("annotation").children("object").eq(object_id);
+    var curr_obj = LM_xml_c.children("object").eq(object_id);
 
     if (curr_obj.children("parts").length>0 && curr_obj.children("parts").children("ispartof").length>0) {
         var tmp = curr_obj.children("parts").children("ispartof").text();
@@ -266,7 +266,7 @@ function getParent(object_id){
 
 function alertParts(title) {
     var message = "PARTS:\n";
-    var Npolygons = $(LM_xml).children("annotation").children("object").length;
+    var Npolygons = LM_xml_c.children("object").length;
     
     message += title +"\n";
     

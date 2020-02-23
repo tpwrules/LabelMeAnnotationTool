@@ -241,7 +241,7 @@ function Scribble_canvas(tag) {
 
       var anno = new annotation(LMnumberOfObjects(LM_xml));
       anno.scribble = new scribble(anno.anno_id);
-      var Nobj = $(LM_xml).children("annotation").children("object").length;
+      var Nobj = LM_xml_c.children("object").length;
       var imagname = main_media.GetFileInfo().GetImName();
       imagname = imagname.substr(0, imagname.length-4);
       anno.scribble.SetRandomCache(this.cache_random_number);
@@ -301,14 +301,14 @@ function Scribble_canvas(tag) {
   // the segmentation and the boundaries of the image containing the 
   // segmentation.  
   this.UpdateMaskXML = function (idx){
-    $(LM_xml).children("annotation").children("object").eq(idx).children("segm").children("scribbles").children("xmin").text(scribble_canvas.image_corners[0]);
-    $(LM_xml).children("annotation").children("object").eq(idx).children("segm").children("scribbles").children("ymin").text(scribble_canvas.image_corners[1]);
-    $(LM_xml).children("annotation").children("object").eq(idx).children("segm").children("scribbles").children("xmax").text(scribble_canvas.image_corners[2]);
-    $(LM_xml).children("annotation").children("object").eq(idx).children("segm").children("scribbles").children("ymax").text(scribble_canvas.image_corners[3]);
-    $(LM_xml).children("annotation").children("object").eq(idx).children("segm").children("box").children("xmin").text(scribble_canvas.object_corners[0]);
-    $(LM_xml).children("annotation").children("object").eq(idx).children("segm").children("box").children("ymin").text(scribble_canvas.object_corners[1]);
-    $(LM_xml).children("annotation").children("object").eq(idx).children("segm").children("box").children("xmax").text(scribble_canvas.object_corners[2]);
-    $(LM_xml).children("annotation").children("object").eq(idx).children("segm").children("box").children("ymax").text(scribble_canvas.object_corners[3]);
+    LM_xml_c.children("object").eq(idx).children("segm").children("scribbles").children("xmin").text(scribble_canvas.image_corners[0]);
+    LM_xml_c.children("object").eq(idx).children("segm").children("scribbles").children("ymin").text(scribble_canvas.image_corners[1]);
+    LM_xml_c.children("object").eq(idx).children("segm").children("scribbles").children("xmax").text(scribble_canvas.image_corners[2]);
+    LM_xml_c.children("object").eq(idx).children("segm").children("scribbles").children("ymax").text(scribble_canvas.image_corners[3]);
+    LM_xml_c.children("object").eq(idx).children("segm").children("box").children("xmin").text(scribble_canvas.object_corners[0]);
+    LM_xml_c.children("object").eq(idx).children("segm").children("box").children("ymin").text(scribble_canvas.object_corners[1]);
+    LM_xml_c.children("object").eq(idx).children("segm").children("box").children("xmax").text(scribble_canvas.object_corners[2]);
+    LM_xml_c.children("object").eq(idx).children("segm").children("box").children("ymax").text(scribble_canvas.object_corners[3]);
     
     WriteXML(SubmitXmlUrl,LM_xml,function(){return;});
   }
@@ -357,7 +357,7 @@ function Scribble_canvas(tag) {
 
   }
   this.resizeandsaveImage = function(scale, fwidth, fheight, annotation_ended, poslx, posly){
-    var Nobj = $(LM_xml).children("annotation").children("object").length;
+    var Nobj = LM_xml_c.children("object").length;
     if (scribble_canvas.annotationid > -1) Nobj = scribble_canvas.annotationid;
     var imagname = main_media.GetFileInfo().GetImName();
     imagname = imagname.substr(0, imagname.length-4);
@@ -572,7 +572,7 @@ function Scribble_canvas(tag) {
         saveScribbleCanvas.setAttribute('height',main_media.height_orig);
         saveScribbleCanvas.getContext("2d").drawImage(imgdata,0,0,main_media.width_orig, main_media.height_orig);       
         var scribbledataURL = saveScribbleCanvas.toDataURL("image/png"); 
-        var Nobj = $(LM_xml).children("annotation").children("object").length;
+        var Nobj = LM_xml_c.children("object").length;
         if (scribble_canvas.annotationid > -1) Nobj = scribble_canvas.annotationid;
         var imagname = main_media.GetFileInfo().GetImName();
         imagname = imagname.substr(0, imagname.length-4);
@@ -586,7 +586,7 @@ function Scribble_canvas(tag) {
     var collectionName = main_media.GetFileInfo().GetDirName().replace("///","/");
 
     var func1 = function (url){
-      var Nobj = $(LM_xml).children("annotation").children("object").length;
+      var Nobj = LM_xml_c.children("object").length;
       console.log(scribble_canvas.annotationid);
       if (scribble_canvas.annotationid > -1) Nobj = scribble_canvas.annotationid;
       var imagname = main_media.GetFileInfo().GetImName();
@@ -835,8 +835,8 @@ function scribble (id){
   };
   // Gets the location of the image containing the mask for the segmentation
   this.GetMaskURL = function (){
-    var url_name =  $(LM_xml).children("annotation").children("object").eq(this.annot_id).children("segm").children("mask").text();
-    var url_folder =  $(LM_xml).children("annotation").children("folder").text();
+    var url_name =  LM_xml_c.children("object").eq(this.annot_id).children("segm").children("mask").text();
+    var url_folder =  LM_xml_c.children("folder").text();
     var loc = window.location.href;
     var   dir = loc.substring(0, loc.lastIndexOf('/tool.html'));
     url_name = dir+'/Masks/'+url_folder+'/'+url_name;

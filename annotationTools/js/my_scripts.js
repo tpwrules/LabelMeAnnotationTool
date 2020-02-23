@@ -294,7 +294,7 @@ function DeleteSelectedPolygon() {
   InsertServerLogData('cpts_not_modified');
   
   // Set <deleted> in LM_xml:
-  $(LM_xml).children("annotation").children("object").eq(selected_poly).children("deleted").text('1');
+  LM_xml_c.children("object").eq(selected_poly).children("deleted").text('1');
   
   // Write XML to server:
   WriteXML(SubmitXmlUrl,LM_xml,function(){return;});

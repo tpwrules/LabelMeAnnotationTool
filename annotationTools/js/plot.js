@@ -7,9 +7,9 @@ function LMplot(xml,imagename) {
   $('body').append('<svg id="canvas" width="2560" height="1920" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><image id="img" xlink:href="' + imagename + '" x="0" y="0" height="1920" width="2560" /></svg>');
 
   // Display polygons:
-  var N = $(xml).children("annotation").children("object").length;
+  var N = LM_xml_c.children("object").length;
   for(var i = 0; i < N; i++) {
-    var obj = $(xml).children("annotation").children("object").eq(i);
+    var obj = LM_xml_c.children("object").eq(i);
     if(!parseInt(obj.children("deleted").text())) {
       // Get object name:
       var name = obj.children("name").text();
@@ -126,13 +126,7 @@ function HashObjectColor(name) {
   var hash = 0;
   name = name.toUpperCase(); 
   for(var i = 0; i < name.length;i++) {
-    var tmp = name.substring(i,i+1);
-    for(var j = 1; j <= 255; j++) {
-      if(unescape('%'+j.toString(16)) == tmp) {
-  hash += j;
-  break;
-      }
-    }
+    hash += name.charCodeAt(i);
   }
   hash = (((hash + 567) * 1048797) % objectColors.length);
   
