@@ -80,6 +80,50 @@ function StartupLabelMe() {
       e.preventDefault();
     }, {"passive": false});
 
+    // handle dragging canvas with right mouse button
+    var mm = document.getElementById("main_media");
+    var cc1 = document.getElementById("myCanvas_bg_div");
+    var cc2 = document.getElementById("draw_canvas_div");
+    var cd1 = document.getElementById("select_canvas_div");
+    var cd2 = document.getElementById("query_canvas_div");
+    function set_cursor(on) {
+      var m = on ? "grabbing" : "crosshair";
+      cc1.style.setProperty("cursor", m);
+      cc2.style.setProperty("cursor", m);
+      m = on ? "grabbing" : "default";
+      cd1.style.setProperty("cursor", m);
+      cd2.style.setProperty("cursor", m);
+    }
+    var dragging = false;
+    mm.addEventListener('mousedown', function(e) {
+      if (e.button == 2) {
+        dragging = true;
+        set_cursor(true);
+        return false;
+      }
+      return true;
+    });
+    mm.addEventListener('mousemove', function(e) {
+      if (dragging) {
+        mm.scrollLeft -= e.movementX;
+        mm.scrollTop -= e.movementY;
+        return false;
+      }
+      return false;
+    });
+    mm.addEventListener('mouseup', function(e) {
+      if (e.button == 2) {
+        dragging = false;
+        set_cursor(false);
+        return false;
+      }
+      return true;
+    });
+    mm.addEventListener('mouseout', function(e) {
+      dragging = false;
+      set_cursor(false);
+    });
+
     if(video_mode) {
       $('#generic_buttons').remove();
       $.getScript("annotationTools/js/video.js", function(){
@@ -295,6 +339,7 @@ function FinishStartup() {
   $('#myCanvas_bg_div').attr("oncontextmenu","javascript:return false;");
   $('#myCanvas_bg_div').attr("onmouseover","javascript:unselectObjects();");
   $('#select_canvas_div').attr("oncontextmenu","javascript:return false;");
+  $('#draw_canvas_div').attr("oncontextmenu","javascript:return false;");
   $('#query_canvas_div').attr("onmousedown","javascript:event.preventDefault();WaitForInput();return false;");
   $('#query_canvas_div').attr("onmouseup","javascript:event.preventDefault();");
   $('#query_canvas_div').attr("oncontextmenu","javascript:return false;");
