@@ -167,8 +167,12 @@ function image(id) {
         this.width_curr = Math.round(this.im_ratio*this.width_orig);
         this.height_curr = Math.round(this.im_ratio*this.height_orig);
 
-        // Scale and scroll the image so that the center stays in the center of the visible area
-        this.ScaleFrame(amt, mx, my);
+
+        // remember where the image is before we start resizing everything.
+        // we need this for zooming.
+        var sx, sy;
+        sx = $("#main_media").scrollLeft();
+        sy = $("#main_media").scrollTop();
         
     	// Remove polygon from draw canvas:
     	var anno = null;
@@ -220,6 +224,10 @@ function image(id) {
         }
     	/*************************************************************/
     	/*************************************************************/
+
+        // now that we are done resizing everything, zoom the frame using the
+        // position we saved earlier.
+        this.ScaleFrame(amt, mx, my, sx, sy);
     };
     
     
@@ -229,7 +237,7 @@ function image(id) {
     // *******************************************
     
     /** Tells the picture to take up the available space in the browser, if it needs it. 6.29.06*/
-    this.ScaleFrame = function(amt, cx, cy) {
+    this.ScaleFrame = function(amt, cx, cy, sx, sy) {
         // Look at the available browser (height,width) and the image (height,width),
         // and use the smaller of the two for the main_media (height,width).
         // also center the image on the mouse so that after rescaling, the center pixels visible stays at the same location
@@ -239,13 +247,13 @@ function image(id) {
         //var avail_width = this.GetAvailWidth();
         this.curr_frame_width = Math.min(this.GetAvailWidth(), this.width_curr);
         if (cx == undefined || cy == undefined) {
-            cx = $("#main_media").scrollLeft()+this.curr_frame_width/2.0; // current center
-            cy = $("#main_media").scrollTop()+this.curr_frame_height/2.0;
+            cx = sx+this.curr_frame_width/2.0; // current center
+            cy = sy+this.curr_frame_height/2.0;
         }
         
         // also center the image so that after rescaling, the center pixels visible stays at the same location
-        Dx = Math.max(0, $("#main_media").scrollLeft()+(amt-1.0)*cx); // displacement needed
-        Dy = Math.max(0, $("#main_media").scrollTop()+(amt-1.0)*cy);
+        Dx = Math.max(0, sx+(amt-1.0)*cx); // displacement needed
+        Dy = Math.max(0, sy+(amt-1.0)*cy);
         
         // set the width and height and scrolls
         $("#main_media").width(this.curr_frame_width).height(this.curr_frame_height);

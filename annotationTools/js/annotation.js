@@ -222,7 +222,7 @@ function annotation(anno_id) {
     this.DeletePolygon = function () {
       // Remove drawn polygon:
         if(this.polygon_id) {
-            console.log('deleting polygon: ',this.polygon_id);
+            //console.log('deleting polygon: ',this.polygon_id);
             $('#'+this.polygon_id).parent().remove();
             this.polygon_id = null;
         }
