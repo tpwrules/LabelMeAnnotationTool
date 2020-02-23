@@ -165,6 +165,8 @@ function DrawCanvasMouseDown(event) {
  on the first control point. For video events the bubble is slightly different
 */
 function DrawCanvasClosePolygon() {
+  // make sure we aren't making degenerate polygons
+  if (draw_x.length < 3) return;
   if(active_canvas!=DRAW_CANVAS) return;
   if(username_flag) submit_username();
   if((object_choices!='...') && (object_choices.length==1)) {

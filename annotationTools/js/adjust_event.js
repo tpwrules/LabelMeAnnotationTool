@@ -499,6 +499,8 @@ function AdjustEvent(dom_attach,x,y,obj_name,ExitFunction,scale, bounding_box_an
   }
 
   this.DeleteControlPoint = function(i) {
+    // make sure the polygon doesn't denegerate
+    if (this.x.length == 3) return false;
     // completely throw away the polygon
     $('#'+this.polygon_id).parent().remove();
     this.RemoveControlPoints();
