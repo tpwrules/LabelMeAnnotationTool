@@ -106,7 +106,7 @@ function AdjustEvent(dom_attach,x,y,obj_name,ExitFunction,scale, bounding_box_an
     // Show center of mass:
     this.ShowCenterOfMass();
     
-    
+    /*
     $(window).keydown({obj: this}, function (e){
       if (!e.data.obj.scale_button_pressed && e.keyCode == 17 && !e.data.obj.isEditingControlPoint){
         e.data.obj.RemoveScalingPoints();
@@ -126,7 +126,7 @@ function AdjustEvent(dom_attach,x,y,obj_name,ExitFunction,scale, bounding_box_an
       e.data.obj.ShowControlPoints();
       e.data.obj.ShowCenterOfMass();
       }
-    });
+    });*/
   };
   
   /** This function stops the adjusting event and calls the ExitFunction: */
