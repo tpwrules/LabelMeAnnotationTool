@@ -181,6 +181,7 @@ function AdjustEvent(dom_attach,x,y,obj_name,ExitFunction,scale, bounding_box_an
       this.scalepoints_ids.push(DrawPoint(this.dom_attach,this.x[i],this.y[i],'r="5" fill="#0000ff" stroke="#ffffff" stroke-width="2.5"',this.scale));
     }
     for (var i = 0; i < this.scalepoints_ids.length; i++) $('#'+this.scalepoints_ids[i]).mousedown({obj: this,point: i},function(e) {
+      if (e.which != 1) return true;
     return e.data.obj.StartMoveScalingPoint(e.data.point);
   });
 
@@ -233,6 +234,7 @@ function AdjustEvent(dom_attach,x,y,obj_name,ExitFunction,scale, bounding_box_an
     
     // Set action:
     $('#'+this.center_id).mousedown({obj: this},function(e) {
+      if (e.which != 1) return true;
        return e.data.obj.StartMoveCenterOfMass();
       });
   };

@@ -149,7 +149,7 @@ function annotation(anno_id) {
         // Set shape actions:
         switch(action_type) {
             case 'rest':
-                this.SetAttribute('onmousedown','StartEditEvent(' + this.anno_id + ',evt); return false;');
+                this.SetAttribute('onmousedown','if (evt.which != 1) return true; StartEditEvent(' + this.anno_id + ',evt); return false;');
                 this.SetAttribute('onmousemove','main_handler.CanvasMouseMove(evt,'+ this.anno_id +'); return false;');
                 this.SetAttribute('oncontextmenu','return false');
                 this.SetCSS('cursor','pointer');
@@ -213,7 +213,7 @@ function annotation(anno_id) {
           $('#'+this.point_id).css('cursor','pointer');
 
           // Set actions for first point:
-          $('#'+this.point_id).attr('onmousedown','DrawCanvasClosePolygon();');
+          $('#'+this.point_id).attr('onmousedown','if (evt.which != 1) return true; DrawCanvasClosePolygon();');
           $('#'+this.point_id).attr('onmouseover',"$('#'+draw_anno.point_id).attr('r',8,'stroke-width',4);");
           $('#'+this.point_id).attr('onmouseout',"if(draw_anno) {$('#'+draw_anno.point_id).attr('r',6,'stroke-width',3);}");
     };

@@ -143,28 +143,32 @@ function image(id) {
     /** Zoom the image given a zoom level (amt) between 0 and inf (or 'fitted'). 
      * @param {float} amt - amount of zoom
     */
-    this.Zoom = function(amt) {
+    this.Zoom = function(amt, mx, my) {
         // if a new polygon is being added while the user press the zoom button then do nothing.
         if(wait_for_input) return;
         
         // if an old polygon is being edited while the user press the zoom button then close the polygon and zoom.
         if(edit_popup_open) StopEditEvent();
         
+        var was_at_min = this.im_ratio == this.browser_im_ratio;
+
         if(amt=='fitted') {
                 this.im_ratio = this.browser_im_ratio;
         } else {
                 this.im_ratio = this.im_ratio * amt;
         }
-        
         // if the scale factor is bellow the original scale, then do nothing (do not make the image too small)
-        if(this.im_ratio < this.browser_im_ratio) {this.im_ratio=this.browser_im_ratio; return;}
+        if(this.im_ratio < this.browser_im_ratio){
+            this.im_ratio=this.browser_im_ratio;
+            if (was_at_min) return;
+        }
         
         // New width and height of the rescaled picture
         this.width_curr = Math.round(this.im_ratio*this.width_orig);
         this.height_curr = Math.round(this.im_ratio*this.height_orig);
-        
+
         // Scale and scroll the image so that the center stays in the center of the visible area
-        this.ScaleFrame(amt);
+        this.ScaleFrame(amt, mx, my);
         
     	// Remove polygon from draw canvas:
     	var anno = null;
@@ -225,26 +229,27 @@ function image(id) {
     // *******************************************
     
     /** Tells the picture to take up the available space in the browser, if it needs it. 6.29.06*/
-    this.ScaleFrame = function(amt) {
+    this.ScaleFrame = function(amt, cx, cy) {
         // Look at the available browser (height,width) and the image (height,width),
         // and use the smaller of the two for the main_media (height,width).
-        // also center the image so that after rescaling, the center pixels visible stays at the same location
+        // also center the image on the mouse so that after rescaling, the center pixels visible stays at the same location
         //var avail_height = this.GetAvailHeight();
         this.curr_frame_height = Math.min(this.GetAvailHeight(), this.height_curr);
         
         //var avail_width = this.GetAvailWidth();
         this.curr_frame_width = Math.min(this.GetAvailWidth(), this.width_curr);
+        if (cx == undefined || cy == undefined) {
+            cx = $("#main_media").scrollLeft()+this.curr_frame_width/2.0; // current center
+            cy = $("#main_media").scrollTop()+this.curr_frame_height/2.0;
+        }
         
         // also center the image so that after rescaling, the center pixels visible stays at the same location
-        cx = $("#main_media").scrollLeft()+this.curr_frame_width/2.0; // current center
-        cy = $("#main_media").scrollTop()+this.curr_frame_height/2.0;
         Dx = Math.max(0, $("#main_media").scrollLeft()+(amt-1.0)*cx); // displacement needed
         Dy = Math.max(0, $("#main_media").scrollTop()+(amt-1.0)*cy);
         
         // set the width and height and scrolls
-        $("#main_media").scrollLeft(Dx).scrollTop(Dy);
         $("#main_media").width(this.curr_frame_width).height(this.curr_frame_height);
-        
+        $("#main_media").scrollLeft(Dx).scrollTop(Dy);
     };
     
     

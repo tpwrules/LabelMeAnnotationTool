@@ -29,6 +29,57 @@ function StartupLabelMe() {
     // fetched image.
     if(!main_media.GetFileInfo().ParseURL()) return;
 
+
+    // zooming can be slow and then it clogs up the event listeners. so
+    // accumulate how much we need to zoom by and only apply it every so often.
+    var z_accum = 1;
+    var z_x, z_y;
+    var z_timer = false;
+
+    function do_zoom() {
+      z_timer = false;
+      main_media.Zoom(z_accum, z_x, z_y);
+    }
+    
+    function queue_zoom(z, x, y) {
+      z_x = x;
+      z_y = y;
+      if (z_timer === false) {
+        z_accum = z;
+        z_timer = window.setTimeout(do_zoom, 50);
+      } else {
+        z_accum *= z;
+      }
+    }
+
+    // handle pinch to zoom and control to zoom
+    window.addEventListener('wheel', (e) => {
+      if (e.ctrlKey || e.metaKey) {
+        e.preventDefault();
+        // inexplicably, chrome accelerates mouse wheel scrolling to the point
+        // where you can get a deltaY of 600 or more. so we restrain that to
+        // a reasonable level
+        var z = Math.min(Math.max(e.deltaY, -10), 10);
+        queue_zoom(1+(-z * 0.01), GetEventPosX(e), GetEventPosY(e));
+      }
+    }, {"passive": false});
+
+    // handle pinch to zoom on safari
+    var last_scale = 1;
+    window.addEventListener('gesturestart', function (e) {
+      e.preventDefault();
+      last_scale = 1;
+    }, {"passive": false});
+    window.addEventListener('gesturechange', function (e) {
+      e.preventDefault();
+      var z = Math.min(Math.max(e.scale/last_scale, -10), 10);
+      last_scale = e.scale;
+      queue_zoom(1+((z-1) * 1.2), e.layerX, e.layerY);
+    }, {"passive": false});
+    window.addEventListener('gestureend', function (e) {
+      e.preventDefault();
+    }, {"passive": false});
+
     if(video_mode) {
       $('#generic_buttons').remove();
       $.getScript("annotationTools/js/video.js", function(){
@@ -240,7 +291,7 @@ function FinishStartup() {
   $('#zoomout').attr("onclick","javascript:main_media.Zoom(1.0/1.15)");
   $('#fit').attr("onclick","javascript:main_media.Zoom('fitted')");
   $('#erase').attr("onclick","javascript:main_handler.EraseSegment()");
-  $('#myCanvas_bg_div').attr("onmousedown","javascript:StartDrawEvent(event);return false;");
+  $('#myCanvas_bg_div').attr("onmousedown","javascript:StartDrawEvent(event);");
   $('#myCanvas_bg_div').attr("oncontextmenu","javascript:return false;");
   $('#myCanvas_bg_div').attr("onmouseover","javascript:unselectObjects();");
   $('#select_canvas_div').attr("oncontextmenu","javascript:return false;");

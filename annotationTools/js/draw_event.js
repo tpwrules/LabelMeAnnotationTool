@@ -20,6 +20,7 @@ function get_date(){
 /** This function is called with the draw event is started.  It can be 
  triggered when the user (1) clicks on the base canvas. */
 function StartDrawEvent(event) {
+  if (event.which != 1) return true;
   draw_x = new Array();
   draw_y = new Array();
   draw_time = new Array();
@@ -76,6 +77,7 @@ function StartDrawEvent(event) {
   // Set mousedown action to handle when user clicks on the drawing canvas:
   $('#draw_canvas_div').unbind();
   $('#draw_canvas_div').mousedown({obj: this},function(e) {
+      if (e.which != 1) return true;
       return DrawCanvasMouseDown(e.originalEvent);
     });
   if (bounding_box){
