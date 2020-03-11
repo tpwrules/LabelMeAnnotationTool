@@ -1,0 +1,14 @@
+@charset "UTF-8";
+/* CSS Document */
+
+#gallerycontainer{
+    width:auto;
+    margin:0px;
+    margin-top:15px;
+    padding:0px auto;
+    border:1px solid #eee;
+    display:none;
+    
+}
+
+
