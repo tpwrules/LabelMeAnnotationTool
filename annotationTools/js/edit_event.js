@@ -45,6 +45,13 @@ function StartEditEvent(anno_id,event) {
   // Move select_canvas to front:
   $('#select_canvas').css('z-index','0');
   $('#select_canvas_div').css('z-index','0');
+
+  // let user click off the edit box to close it
+  $('#select_canvas').mousedown({obj: this},function(e) {
+      if (e.which == 1) {
+        return StopEditEvent();
+      }
+    });
   
   var anno = main_canvas.DetachAnnotation(anno_id);
   
@@ -104,6 +111,8 @@ function StopEditEvent() {
   // Move select_canvas to back:
   $('#select_canvas').css('z-index','-2');
   $('#select_canvas_div').css('z-index','-2');
+  // get rid of handler for off-edit-dialog-box clicking
+  $('#select_canvas').unbind("mousedown");
   
   // Remove polygon from the select canvas:
   if (!video_mode) select_anno.DeletePolygon();

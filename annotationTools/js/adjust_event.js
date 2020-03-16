@@ -137,6 +137,8 @@ function AdjustEvent(dom_attach,x,y,obj_name,ExitFunction,scale, bounding_box_an
     // Remove key press action
     $(window).unbind("keydown");
     $(window).unbind("keyup");
+    // and click off canvas action
+    $('#select_canvas').unbind("mousedown");
     // Remove control points and center of mass point: 
     this.RemoveControlPoints();
     this.RemoveCenterOfMass();
@@ -168,6 +170,9 @@ function AdjustEvent(dom_attach,x,y,obj_name,ExitFunction,scale, bounding_box_an
         this.y.splice(curr_pt, 1);
       }
     }
+
+    // delete selection polygon so we don't get two next time the user selects this annotation
+    select_anno.DeletePolygon();
 
     // Call exit function:
 
