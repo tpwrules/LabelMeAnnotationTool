@@ -72,9 +72,10 @@ function StartEditEvent(anno_id,event) {
   main_media.ScrollbarsOff();
   if(LMgetObjectField(LM_xml, anno.anno_id, 'verified')) {
     edit_popup_open = 1;
-    var innerHTML = "<b>This annotation has been blocked.</b><br />";
+    /*var innerHTML = "<b>This annotation has been blocked.</b><br />";
     var dom_bubble = CreatePopupBubble(pt[0],pt[1],innerHTML,'main_section');
-    CreatePopupBubbleCloseButton(dom_bubble,StopEditEvent);
+    CreatePopupBubbleCloseButton(dom_bubble,StopEditEvent);*/
+    mkViewPopup(pt[0],pt[1],anno);
   }
   else {
     // Set object list choices for points and lines:

@@ -55,16 +55,16 @@ function CreatePopupBubble(left,top,innerHTML,dom_attach) {
   return bubble_name;
 }
 function addAutoComplete(){
-	var tags = [];
-	$.getScript("./annotationTools/js/wordnet_data.js", function(){
+  var tags = [];
+  $.getScript("./annotationTools/js/wordnet_data.js", function(){
     var NoResultsLabel = 'No results found';
-		tags = data_wordnet;
-		$( "#objEnter" ).autocomplete({
+    tags = data_wordnet;
+    $( "#objEnter" ).autocomplete({
         
-			  source: function( request, response ) {
+        source: function( request, response ) {
           if (request.term.length > 0){
             var matcher2 = new RegExp( "^" + $.ui.autocomplete.escapeRegex( request.term )+'$', "i" );
-    			  var matcher = new RegExp( "^" + $.ui.autocomplete.escapeRegex( request.term ), "i" );
+            var matcher = new RegExp( "^" + $.ui.autocomplete.escapeRegex( request.term ), "i" );
             res = $.grep( tags, function( item ){
               aux = matcher.test( item );
               return aux
@@ -82,7 +82,7 @@ function addAutoComplete(){
             if (res.length == 0){
               res = [NoResultsLabel];
             }
-    			  response(res);
+            response(res);
           }
           else {
             $("#objEnter").css('color', 'black');
@@ -112,7 +112,7 @@ function addAutoComplete(){
         },
 
         minLength: 0  
-		}).data("ui-autocomplete")._renderItem =  function( ul, item ) {
+    }).data("ui-autocomplete")._renderItem =  function( ul, item ) {
             // Replace the matched text with a custom span. This
             // span uses the class found in the "highlightClass" option.
              var newText = String(item.value).replace(
@@ -126,7 +126,7 @@ function addAutoComplete(){
           };
     $(".ui-autocomplete").css('font-size', '11px')
     $(".ui-autocomplete").css('font-family', 'BlinkMacSystemFont')
-	});	
+  }); 
 
 }
 
@@ -175,6 +175,17 @@ function mkPopup(left,top,scribble_popup) {
 function mkEditPopup(left,top,anno) {
   edit_popup_open = 1;
   var innerHTML = GetPopupFormEdit(anno);
+  var dom_bubble = CreatePopupBubble(left,top,innerHTML,'main_section');
+  CreatePopupBubbleCloseButton(dom_bubble,StopEditEvent);
+
+  // Focus the cursor inside the box
+  $('#objEnter').select();
+  $('#objEnter').focus();
+}
+
+function mkViewPopup(left,top,anno) {
+  edit_popup_open = 1;
+  var innerHTML = GetPopupFormView(anno);
   var dom_bubble = CreatePopupBubble(left,top,innerHTML,'main_section');
   CreatePopupBubbleCloseButton(dom_bubble,StopEditEvent);
 
@@ -282,6 +293,40 @@ function GetPopupFormEdit(anno) {
   // Add parts/Stop adding parts
   //if (add_parts_to == null) html_str += '<input type="button" value="Add parts" title="Press this button if you want to start adding parts" onclick="main_handler.StartAddParts();" tabindex="0" />';
   
+  return html_str;
+}
+
+function GetPopupFormView(anno) {
+  // get object name and attributes from 'anno'
+  edit_popup_open =  1;
+  part_bubble = false;
+  var obj_name = LMgetObjectField(LM_xml,anno.anno_id,'name');
+  if(obj_name=="") obj_name = "?";
+  var attributes = LMgetObjectField(LM_xml,anno.anno_id,'attributes');
+  var occluded = LMgetObjectField(LM_xml,anno.anno_id,'occluded');
+  var parts = LMgetObjectField(LM_xml, anno.anno_id, 'parts');
+  
+  html_str = "<b>Object name</b><br />"; 
+  // replaces HTMLobjectBox
+  html_str += '<input name="objEnter" id="objEnter" type="text" style="width:220px;" tabindex="0" value="'+obj_name+'" title="The object\'s name." readonly="readonly" /><br />';
+
+  if(use_attributes) {
+    // replace HTMLoccludedBox
+    // by default, the value of occluded is "no"
+    if (!(occluded=="no" || occluded=="yes")) {
+      occluded="no";
+    }
+    
+    html_str += 'Is occluded: '+occluded;
+    html_str += '<br /><b>Attributes</b><br />';
+    // replace HTMLattributesBox
+    html_str += '<textarea name="attributes" id="attributes" type="text" style="width:220px; height:3em;" tabindex="0" title="Comma separated list of attributes, adjectives or other object properties" readonly="readonly">'+attributes+'</textarea>'
+  }
+  
+  // Done button:
+  html_str += '<br /><input type="button" value="Done" title="Press this button when you are done viewing." onclick="StopEditEvent();" tabindex="0" />';
+  html_str += '<br />NOTE: Annotation is view-only.'
+
   return html_str;
 }
 
