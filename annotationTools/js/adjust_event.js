@@ -427,57 +427,11 @@ function AdjustEvent(dom_attach,x,y,obj_name,ExitFunction,scale, bounding_box_an
     mx = Math.max(Math.min(Math.round(mx/this.scale),main_media.width_orig),1);
     my = Math.max(Math.min(Math.round(my/this.scale),main_media.height_orig),1);
 
-    // we want to add the point to the segment that is closest to the mouse.
-    // so, we need to find that segment.
-    // (thanks Joshua! https://stackoverflow.com/a/6853926)
-    var closest_seg = 0;
-    var seg_dist = Infinity;
-    var pt_x;
-    var pt_y;
-    for (var pi=0; pi<this.x.length; pi++) {
-      // get the start and end point of this segment
-      var sx1 = this.x[pi];
-      var sy1 = this.y[pi];
-      var sx2 = this.x[(pi+1)%this.x.length];
-      var sy2 = this.y[(pi+1)%this.x.length];
-      // project the mouse click onto the line segment and calculate
-      // projection distance: how far along the line the projected point is
-      var A = mx-sx1;
-      var B = my-sy1;
-      var C = sx2-sx1;
-      var D = sy2-sy1;
-
-      var dot = A*C + B*D;
-      var len_sq = C*C + D*D;
-      var line_pos = -1;
-      if (len_sq > 0) line_pos = dot / len_sq;
-
-      var lx, ly;
-      if (line_pos <= 0) {
-        // can't be before the start of the line
-        lx = sx1;
-        ly = sy1;
-      } else if (line_pos >= 1) {
-        // can't be after the end of the line
-        lx = sx2;
-        ly = sy2;
-      } else {
-        lx = sx1 + line_pos*C;
-        ly = sy1 + line_pos*D;
-      }
-
-      var dx = mx-lx;
-      var dy = my-ly;
-      var dist = Math.sqrt(dx*dx + dy*dy);
-
-      if (dist < seg_dist) {
-        // this segment has a point closer to the mouse than any previous
-        seg_dist = dist;
-        closest_seg = (pi+1)%this.x.length;
-        pt_x = lx;
-        pt_y = ly;
-      }
-    }
+    var closest = closest_point_on_poly(mx, my, this.x, this.y);
+    var pt_x = closest[0];
+    var pt_y = closest[1];
+    var seg_dist = closest[2];
+    var closest_seg = closest[3];
 
     // make sure the user is clicking roughly on the line
     if (seg_dist > 5/this.scale) {
@@ -630,26 +584,9 @@ function AdjustEvent(dom_attach,x,y,obj_name,ExitFunction,scale, bounding_box_an
 
   */
   this.CenterOfMass = function(x,y) {
-    var N = x.length;
-    
-    // Center of mass for a single point:
-    if(N==1) {
-      this.center_x = x[0];
-      this.center_y = y[0];
-      return;
-    }
-    // The center of mass is the average polygon edge midpoint weighted by 
-    // edge length:
-    this.center_x = 0; this.center_y = 0;
-    var perimeter = 0;
-    for(var i = 1; i <= N; i++) {
-      var length = Math.round(Math.sqrt(Math.pow(x[i-1]-x[i%N], 2) + Math.pow(y[i-1]-y[i%N], 2)));
-      this.center_x += length*Math.round((x[i-1] + x[i%N])/2);
-      this.center_y += length*Math.round((y[i-1] + y[i%N])/2);
-      perimeter += length;
-    }
-    this.center_x /= perimeter;
-    this.center_y /= perimeter;
+    var center = compute_center_of_mass(x, y);
+    this.center_x = center[0];
+    this.center_y = center[1];
   };
 
 
@@ -659,4 +596,84 @@ function AdjustEvent(dom_attach,x,y,obj_name,ExitFunction,scale, bounding_box_an
     var attr = 'fill="none" stroke="' + HashObjectColor(obj_name) + '" stroke-width="4"';
     return DrawPolygon(dom_id,x,y,obj_name,attr,scale);
   };
+}
+
+function compute_center_of_mass(x, y) {
+  var N = x.length;
+  
+  // Center of mass for a single point:
+  if(N==1) {
+    return [x[0], y[0]];
+  }
+  // The center of mass is the average polygon edge midpoint weighted by 
+  // edge length:
+  var center_x = 0;
+  var center_y = 0;
+  var perimeter = 0;
+  for(var i = 1; i <= N; i++) {
+    var length = Math.round(Math.sqrt(Math.pow(x[i-1]-x[i%N], 2) + Math.pow(y[i-1]-y[i%N], 2)));
+    center_x += length*Math.round((x[i-1] + x[i%N])/2);
+    center_y += length*Math.round((y[i-1] + y[i%N])/2);
+    perimeter += length;
+  }
+  center_x /= perimeter;
+  center_y /= perimeter;
+
+  return [center_x, center_y];
+}
+
+function closest_point_on_poly(mx, my, poly_x, poly_y) {
+  // we want to add the point to the segment that is closest to the mouse.
+  // so, we need to find that segment.
+  // (thanks Joshua! https://stackoverflow.com/a/6853926)
+  var closest_seg = 0;
+  var seg_dist = Infinity;
+  var pt_x;
+  var pt_y;
+  for (var pi=0; pi<poly_x.length; pi++) {
+    // get the start and end point of this segment
+    var sx1 = poly_x[pi];
+    var sy1 = poly_y[pi];
+    var sx2 = poly_x[(pi+1)%poly_x.length];
+    var sy2 = poly_y[(pi+1)%poly_x.length];
+    // project the mouse click onto the line segment and calculate
+    // projection distance: how far along the line the projected point is
+    var A = mx-sx1;
+    var B = my-sy1;
+    var C = sx2-sx1;
+    var D = sy2-sy1;
+
+    var dot = A*C + B*D;
+    var len_sq = C*C + D*D;
+    var line_pos = -1;
+    if (len_sq > 0) line_pos = dot / len_sq;
+
+    var lx, ly;
+    if (line_pos <= 0) {
+      // can't be before the start of the line
+      lx = sx1;
+      ly = sy1;
+    } else if (line_pos >= 1) {
+      // can't be after the end of the line
+      lx = sx2;
+      ly = sy2;
+    } else {
+      lx = sx1 + line_pos*C;
+      ly = sy1 + line_pos*D;
+    }
+
+    var dx = mx-lx;
+    var dy = my-ly;
+    var dist = Math.sqrt(dx*dx + dy*dy);
+
+    if (dist < seg_dist) {
+      // this segment has a point closer to the mouse than any previous
+      seg_dist = dist;
+      closest_seg = (pi+1)%poly_x.length;
+      pt_x = lx;
+      pt_y = ly;
+    }
+  }
+
+  return [pt_x, pt_y, seg_dist, closest_seg];
 }

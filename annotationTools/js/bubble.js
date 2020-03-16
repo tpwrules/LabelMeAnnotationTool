@@ -13,16 +13,43 @@
  * @returns {string} bubble_name - dom element name for the popup bubble
 */
 var part_bubble;
-function CreatePopupBubble(left,top,innerHTML,dom_attach) {
+function CreatePopupBubble(pts_x,pts_y,mx,my,innerHTML,dom_attach) {
   var html_str;
   var bubble_name = 'myPopup';
+
+  // put the popup at the point on the polygon closest to the mouse click
+  var closest = closest_point_on_poly(mx, my, pts_x, pts_y);
+  var pt_x = closest[0];
+  var pt_y = closest[1];
+
+  // make sure that point is adequately visible
+  var scale = main_media.GetImRatio();
+  var pt = main_media.SlideWindow(Math.round(pt_x*scale),Math.round(pt_y*scale));
+
+  var left = pt[0];
+  var top = pt[1];
   
   // Adjust location to account for the displacement of the arrow:
   left -= 22;
   if (left < 5) left = 5;
+
+  // try to stop the bubble from overlapping the polygon: put it far away from
+  // the center of mass
+  var center = compute_center_of_mass(pts_x, pts_y);
+  var on_top = true;
+  if (center[1] > (top+$("#main_media").scrollTop())/scale) {
+    on_top = false;
+  }
+
+  // make sure it doesn't go off the screen
+  if (top < 214 && !on_top) {
+    on_top = true;
+  } else if (top > main_media.curr_frame_height-214 && on_top) {
+    on_top = false;
+  }
   
   // Select the vertical position of the bubble decoration arrow
-  if (top > 214) {
+  if (!on_top) {
     html_str  = '<div class= "bubble" id="' + bubble_name + '" style="position:absolute;z-index:5; left:' + left + 'px; top:' + top + 'px;">';
   }
   else {
@@ -41,9 +68,9 @@ function CreatePopupBubble(left,top,innerHTML,dom_attach) {
     
   
   // Place bubble in the right location taking into account the rendered size and the location of the arrow
-  if(top > 214) {  
+  if(!on_top) {  
     h = $('#'+bubble_name).height();
-    document.getElementById(bubble_name).style.top = (top-h-80) + 'px';
+    document.getElementById(bubble_name).style.top = (top-h-68) + 'px';
   }
   else {
     document.getElementById(bubble_name).style.top = (top) + 'px';
@@ -163,19 +190,19 @@ function CreatePopupBubbleCloseButton(dom_bubble,close_function) {
 //
 
 // Query popup bubble:
-function mkPopup(left,top,scribble_popup) {
+function mkPopup(pts_x,pts_y,mx,my,scribble_popup) {
   wait_for_input = 1;
   var innerHTML = GetPopupFormDraw(scribble_popup);
-  CreatePopupBubble(left,top,innerHTML,'main_section');
+  CreatePopupBubble(pts_x,pts_y,mx,my,innerHTML,'main_section');
 
   // Focus the cursor inside the box
   setTimeout("$('#objEnter').focus();",1);
 }
 
-function mkEditPopup(left,top,anno) {
+function mkEditPopup(pts_x,pts_y,mx,my,anno) {
   edit_popup_open = 1;
   var innerHTML = GetPopupFormEdit(anno);
-  var dom_bubble = CreatePopupBubble(left,top,innerHTML,'main_section');
+  var dom_bubble = CreatePopupBubble(pts_x,pts_y,mx,my,innerHTML,'main_section');
   CreatePopupBubbleCloseButton(dom_bubble,StopEditEvent);
 
   // Focus the cursor inside the box
@@ -183,10 +210,10 @@ function mkEditPopup(left,top,anno) {
   $('#objEnter').focus();
 }
 
-function mkViewPopup(left,top,anno) {
+function mkViewPopup(pts_x,pts_y,mx,my,anno) {
   edit_popup_open = 1;
   var innerHTML = GetPopupFormView(anno);
-  var dom_bubble = CreatePopupBubble(left,top,innerHTML,'main_section');
+  var dom_bubble = CreatePopupBubble(pts_x,pts_y,mx,my,innerHTML,'main_section');
   CreatePopupBubbleCloseButton(dom_bubble,StopEditEvent);
 
   // Focus the cursor inside the box

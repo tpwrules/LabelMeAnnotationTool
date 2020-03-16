@@ -71,9 +71,21 @@ function StartEditEvent(anno_id,event) {
     pt_y = select_anno.GetPtsY();
   }
   FillPolygon(select_anno.DrawPolygon(main_media.GetImRatio(),pt_x,pt_y));
-  
-  // Get location where popup bubble will appear:
-  var pt = main_media.SlideWindow(Math.round(pt_x[0]*main_media.GetImRatio()),Math.round(pt_y[0]*main_media.GetImRatio()));
+
+  // where the mouse was clicked
+  var mx, my;
+  if (event != null) {
+    var mm = $("#main_media");
+    mx = event.x-55+mm.scrollLeft();
+    my = event.y-70+mm.scrollTop();
+    var scale = main_media.GetImRatio();
+    // converted to image coordinates
+    mx = Math.max(Math.min(Math.round(mx/scale),main_media.width_orig),1);
+    my = Math.max(Math.min(Math.round(my/scale),main_media.height_orig),1);
+  } else {
+    mx = pt_x[0];
+    my = pt_y[0];
+  }
 
   // Make edit popup appear.
   main_media.ScrollbarsOff();
@@ -82,7 +94,7 @@ function StartEditEvent(anno_id,event) {
     /*var innerHTML = "<b>This annotation has been blocked.</b><br />";
     var dom_bubble = CreatePopupBubble(pt[0],pt[1],innerHTML,'main_section');
     CreatePopupBubbleCloseButton(dom_bubble,StopEditEvent);*/
-    mkViewPopup(pt[0],pt[1],anno);
+    mkViewPopup(pt_x,pt_y,mx,my,anno);
   }
   else {
     // Set object list choices for points and lines:
@@ -90,7 +102,7 @@ function StartEditEvent(anno_id,event) {
     
     // Popup edit bubble:
     WriteLogMsg('*Opened_Edit_Popup');
-    mkEditPopup(pt[0],pt[1],anno);
+    mkEditPopup(pt_x,pt_y,mx,my,anno);
     
     // If annotation is point or line, then 
     if(doReset) object_choices = '...';

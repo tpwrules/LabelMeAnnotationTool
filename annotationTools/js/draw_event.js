@@ -196,13 +196,10 @@ function DrawCanvasClosePolygon() {
   // Set object list choices for points and lines:
   var doReset = SetObjectChoicesPointLine(draw_x.length);
 
-  // Get location where popup bubble will appear:
-  var pt = main_media.SlideWindow(Math.round(draw_x[0]*main_media.GetImRatio()),Math.round(draw_y[0]*main_media.GetImRatio()));
-
   // Make query popup appear.
   main_media.ScrollbarsOff();
   WriteLogMsg('*What_is_this_object_query');
-  if (video_mode){
+  /*if (video_mode){
     var html_str = "<b>Enter object name</b><br />";
     html_str += HTMLobjectBox("");
     
@@ -230,7 +227,8 @@ function DrawCanvasClosePolygon() {
     wait_for_input = 1;
     CreatePopupBubble(pt[0],pt[1], html_str, 'main_section');
   } 
-  else mkPopup(pt[0],pt[1]);
+  else */
+  mkPopup(draw_x, draw_y, draw_x[0], draw_y[0]);
   
   // If annotation is point or line, then 
   if(doReset) object_choices = '...';
