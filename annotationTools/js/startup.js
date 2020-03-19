@@ -321,8 +321,8 @@ function FinishStartup() {
     if (!video_mode) $('#img_url').attr('onclick','javascript:location.href=main_media.GetFileInfo().GetImagePath();');
     else $('#img_url').attr('onclick','javascript:location.href=main_media.GetFileInfo().GetVideoPath();');
   } 
-  $('#changeuser').attr("onclick","javascript:show_enterUserNameDIV(); return false;");
-  $('#userEnter').attr("onkeyup","javascript:var c; if(event.keyCode)c=event.keyCode; if(event.which)c=event.which; if(c==13 || c==27) changeAndDisplayUserName(c);");
+//  $('#changeuser').attr("onclick","javascript:show_enterUserNameDIV(); return false;");
+//  $('#userEnter').attr("onkeyup","javascript:var c; if(event.keyCode)c=event.keyCode; if(event.which)c=event.which; if(c==13 || c==27) changeAndDisplayUserName(c);");
   $('#xml_url').attr("onclick","javascript:GetXMLFile();");
   $('#prevImage').attr("onclick","javascript:ShowPrevImage()");
   $('#nextImage').attr("onclick","javascript:ShowNextImage()");
@@ -346,7 +346,8 @@ function FinishStartup() {
   $('#query_canvas_div').attr("oncontextmenu","javascript:return false;");
 
   // Initialize the username:
-  initUserName();
+  //initUserName();
+  username="hi";
 
   // Enable scribble mode:
 
