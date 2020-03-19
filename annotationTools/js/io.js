@@ -11,6 +11,13 @@ function ReadXML(xml_file,SuccessFunction,ErrorFunction) {
 }
 
 function WriteXML(url,xml_data,SuccessFunction,ErrorFunction) {
+    // increment edit version so the server knows these anontations are new.
+    // assuming it exists, of course
+    var curr_version = LM_xml_c.children("edit_version").text();
+    if (curr_version !== "") {
+      LM_xml_c.children("edit_version").text((parseInt(curr_version)+1).toString());
+    }
+
     oXmlSerializer =  new XMLSerializer();
     sXmlString = oXmlSerializer.serializeToString(xml_data);
         
