@@ -385,7 +385,7 @@ function InitializeAnnotationTools(tag_button, tag_canvas){
 
      
 
-      var html_str2 = '<button xmlns="http://www.w3.org/1999/xhtml" id="img_url" class="labelBtn" type="button" title="Download Pack" onclick="javascript:GetPackFile();"> \
+     /*var html_str2 = '<button xmlns="http://www.w3.org/1999/xhtml" id="img_url" class="labelBtn" type="button" title="Download Pack" onclick="javascript:GetPackFile();"> \
           <img src="Icons/download_all.png" height="30" /> \
           </button>';
 
@@ -395,7 +395,7 @@ function InitializeAnnotationTools(tag_button, tag_canvas){
          </form>';
 
       $('#tool_buttons').append(html_str3);
-      $('#help').before(html_str2); 
+      $('#help').before(html_str2); */
     }
     $('#'+tag_button).append(html_str);  
     if (document.getElementById("polygon")) document.getElementById("polygon").setAttribute('style', 'background-color: #faa');
