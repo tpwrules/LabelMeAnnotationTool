@@ -103,13 +103,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       </button>
     </div>
     <div id="label_buttons_contrast">
-
-      <button id="lessContrast" class="labelBtn" type="button" title="Decrease Brightness">
-        <img src="Icons/morecontrast.png" height="30" />
+      <button class="labelBtn" type="button" onclick="$('#brightness_range').val(50);main_media.update_brightness_contrast();">
+        <img src="Icons/lesscontrast.png" height="30"/>
       </button>
-      <button id="moreContrast" class="labelBtn" type="button" title="Increase Brightness">
-        <img src="Icons/lesscontrast.png" height="30" />
+      <input id="brightness_range" type="range" min="1" max="150" value="50" style="width:60px; margin-bottom:4px;" oninput="main_media.update_brightness_contrast();" />
+      <button class="labelBtn" type="button" onclick="$('#contrast_range').val(50);main_media.update_brightness_contrast();">
+        <img src="Icons/contrast_indicator.png" height="30" />
       </button>
+      <input id="contrast_range" type="range" min="1" max="150" value="50" style="width:60px; margin-bottom:4px;" oninput="main_media.update_brightness_contrast();" />
     </div>
     
     <!-- DRAWING BUTTONS -->

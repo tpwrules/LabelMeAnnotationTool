@@ -326,8 +326,8 @@ function FinishStartup() {
   $('#xml_url').attr("onclick","javascript:GetXMLFile();");
   $('#prevImage').attr("onclick","javascript:ShowPrevImage()");
   $('#nextImage').attr("onclick","javascript:ShowNextImage()");
-  $('#lessContrast').attr("onclick","javascript:main_media.AugmentContrast()");
-  $('#moreContrast').attr("onclick","javascript:main_media.ReduceContrast()");
+//  $('#lessContrast').attr("onclick","javascript:main_media.AugmentContrast()");
+//  $('#moreContrast').attr("onclick","javascript:main_media.ReduceContrast()");
   if (video_mode){
     $('#nextImage').attr("title", "Next Video");
     $('#img_url').attr("title", "Download Video");

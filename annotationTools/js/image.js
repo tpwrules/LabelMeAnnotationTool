@@ -194,7 +194,7 @@ function image(id) {
         // Draw Image in canvas
 
         
-        main_media.DisplayWithContrast(main_media.contrast);
+        //main_media.DisplayWithContrast(main_media.contrast);
         // Redraw polygons.
     	main_canvas.RenderAnnotations();
 
@@ -313,7 +313,7 @@ function image(id) {
 		data = ctx.getImageData(0,0, c.width, c.height);
         return data;
 	}
-    this.AugmentContrast = function(){
+    /*this.AugmentContrast = function(){
         this.contrast = this.contrast + 5;
         this.contrast = Math.min(this.contrast, 254);
         this.DisplayWithContrast(this.contrast);
@@ -342,7 +342,11 @@ function image(id) {
         data_im.data = data;
         main_media.im.getContext('2d').putImageData(data_im,0,0,0,0,main_media.width_curr, main_media.height_curr);
 
-	}
-    
+	}*/
+    this.update_brightness_contrast = function() {
+        var brightness = $("#brightness_range").val()/50;
+        var contrast = $("#contrast_range").val()/50;
+        $("#main_media").css("filter", "brightness("+brightness+") contrast("+contrast+")");
+    }
 }
 
