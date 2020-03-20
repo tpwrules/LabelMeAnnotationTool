@@ -29,6 +29,7 @@ function StartupLabelMe() {
     // fetched image.
     if(!main_media.GetFileInfo().ParseURL()) return;
 
+    show_help_if_enabled();
 
     // zooming can be slow and then it clogs up the event listeners. so
     // accumulate how much we need to zoom by and only apply it every so often.
