@@ -1,7 +1,9 @@
 function show_help_if_enabled() {
   var help_enabled = getCookie("help_bother_me");
-  if (help_enabled === null || help_enabled == "bother_me_please") {
-    document.getElementById("help_bother_me").checked = "true";
+  if (help_enabled === null || help_enabled === "bother_me_please") {
+    if (help_enabled === "bother_me_please") {
+      document.getElementById("help_bother_me").checked = "true";
+    }
     show_help();
   }
 }
