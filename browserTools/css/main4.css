@@ -1,9 +1,9 @@
 @charset "UTF-8";
-/*@import url(http://fonts.googleapis.com/css?family=Cabin:400);*/
+/*@import url(http://fonts.googleapis.com/css?family=Cabin:400);
 @font-face {
     font-family: 'Cabin';
     src:url(Cabin-Regular.ttf)
-}
+}*/
 
 body {
     font-family:'Cabin', Helvetica, Arial, sans-serif;
