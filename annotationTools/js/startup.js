@@ -354,7 +354,7 @@ function FinishStartup() {
   InitializeAnnotationTools('label_buttons_drawing','main_media');
   
   // Set action when the user presses a key:
-  document.onkeyup = main_handler.KeyPress;
+  document.addEventListener("keydown", main_handler.KeyPress);
   
   // Collect statistics:
   ref = document.referrer;

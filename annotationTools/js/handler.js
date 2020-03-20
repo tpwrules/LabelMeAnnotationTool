@@ -359,6 +359,7 @@ function handler() {
     this.KeyPress = function (event) {
         // Delete event: 46 - delete key; 8 - backspace key
         if(((event.keyCode==46) || (event.keyCode==8)) && !wait_for_input && !edit_popup_open && !username_flag) {
+            event.preventDefault(); // stop the browser from going back a page
             // Determine whether we are deleting a complete or partially
             // complete polygon.
             if(!main_handler.EraseSegment()) DeleteSelectedPolygon();
