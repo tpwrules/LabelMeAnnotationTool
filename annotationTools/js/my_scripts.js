@@ -14,6 +14,7 @@ function GetEventPosY(event) {
 }
 
 function RemoveSpecialChars(str) {
+  if (object_choices != "...") { return str; }
   var re = /\$|@|#|~|`|\%|\*|\^|\&|\+|\=|\[|\]|\}|\{|\;|\:|\'|\"|\<|\>|\?|\||\\|\!|\$/g;
   var aux = str.replace(re,"_");
   aux =  aux.replace(/\s+/g,' ');
