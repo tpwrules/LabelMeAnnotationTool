@@ -208,6 +208,9 @@ function mkEditPopup(pts_x,pts_y,mx,my,anno) {
   // Focus the cursor inside the box
   $('#objEnter').select();
   $('#objEnter').focus();
+  if (object_choices != '...') {
+    $('#objEnter').select2({dropdownAutoWidth: true});
+  }
 }
 
 function mkViewPopup(pts_x,pts_y,mx,my,anno) {
@@ -364,34 +367,35 @@ function GetPopupFormView(anno) {
 // Shows the box to enter the object name
 function HTMLobjectBox(obj_name) {
   var html_str="";
-  
-  html_str += '<input name="objEnter" id="objEnter" type="text" style="width:220px;" tabindex="0" value="'+obj_name+'" title="Enter the object\'s name here. Avoid application specific names, codes, long descriptions. Use a name you think other people would agree in using. "';
-  
-  html_str += ' onkeyup="var c;if(event.keyCode)c=event.keyCode;if(event.which)c=event.which;if(c==13){';
-  //html_str += 'console.log($(".ui-autocomplete.ui-widget:visible").length);';
-  // if obj_name is empty it means that the box is being created
-  if (obj_name=='') {
-    // If press enter, then submit; if press ESC, then delete:
-    if (video_mode) html_str += 'main_media.SubmitObject()};if(c==27) main_handler.WhatIsThisObjectDeleteButton();" ';
-    else html_str += 'main_handler.SubmitQuery()};if(c==27)main_handler.WhatIsThisObjectDeleteButton();" ';
-  }
-  else {
-    // If press enter, then submit:
-    if (video_mode) html_str += 'main_media.SubmitEditObject()};" ';
-    else html_str += 'main_handler.SubmitEditLabel()};" ';
-  }
-  
-  // if there is a list of objects, we need to habilitate the list
-  if(object_choices=='...') {
-    html_str += '/>'; // close <input
-  }
-  else {
-    html_str += 'list="datalist1" />'; // insert list and close <input
-    html_str += '<datalist id="datalist1"><select style="display:none">';
-    for(var i = 0; i < object_choices.length; i++) {
-      html_str += '<option value="' + object_choices[i] + '">' + object_choices[i] + '</option>';
+
+  if (object_choices=='...') {
+    html_str += '<input name="objEnter" id="objEnter" type="text" style="width:220px;" tabindex="0" value="'+obj_name+'" title="Enter the object\'s name here. Avoid application specific names, codes, long descriptions. Use a name you think other people would agree in using. "';
+
+    html_str += ' onkeyup="var c;if(event.keyCode)c=event.keyCode;if(event.which)c=event.which;if(c==13){';
+    //html_str += 'console.log($(".ui-autocomplete.ui-widget:visible").length);';
+    // if obj_name is empty it means that the box is being created
+    if (obj_name=='') {
+      // If press enter, then submit; if press ESC, then delete:
+      if (video_mode) html_str += 'main_media.SubmitObject()};if(c==27) main_handler.WhatIsThisObjectDeleteButton();" ';
+      else html_str += 'main_handler.SubmitQuery()};if(c==27)main_handler.WhatIsThisObjectDeleteButton();" ';
     }
-    html_str += '</select></datalist>';
+    else {
+      // If press enter, then submit:
+      if (video_mode) html_str += 'main_media.SubmitEditObject()};" ';
+      else html_str += 'main_handler.SubmitEditLabel()};" ';
+    }
+
+    html_str += '/>'; // close <input
+  } else {
+    html_str += '<select name="objEnter" id="objEnter" style="width:220px;" tabindex="0">';
+    for(var i = 0; i < object_choices.length; i++) {
+      html_str += '<option value="' + object_choices[i] + '" ';
+      if (obj_name == object_choices[i]) {
+        html_str += 'selected="selected" ';
+      }
+      html_str += '>' + object_choices[i] + '</option>';
+    }
+    html_str += '</select>';
   }
   
   html_str += '<br />';
