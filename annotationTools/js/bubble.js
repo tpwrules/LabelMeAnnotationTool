@@ -197,6 +197,9 @@ function mkPopup(pts_x,pts_y,mx,my,scribble_popup) {
 
   // Focus the cursor inside the box
   setTimeout("$('#objEnter').focus();",1);
+  if (object_choices != '...') {
+    $('#objEnter').select2({dropdownAutoWidth: true});
+  }
 }
 
 function mkEditPopup(pts_x,pts_y,mx,my,anno) {
