@@ -229,11 +229,17 @@ function mkViewPopup(pts_x,pts_y,mx,my,anno) {
 
 function CloseQueryPopup() {
   wait_for_input = 0;
+  if (object_choices != '...') {
+    $('#objEnter').select2('close');
+  }
   $('#myPopup').remove();
 }
 
 function CloseEditPopup() {
   edit_popup_open = 0;
+  if (object_choices != '...') {
+    $('#objEnter').select2('close');
+  }
   $('#myPopup').remove();
 }
 
