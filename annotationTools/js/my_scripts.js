@@ -25,7 +25,7 @@ function RemoveSpecialChars(str) {
 }
 
 function WaitForInput() {
-  alert("Need to enter object name.");
+  alert("Please finish creating the annotation.");
 }
 
 // Return true if the username is "anonymous".
