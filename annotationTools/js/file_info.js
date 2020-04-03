@@ -59,9 +59,9 @@ function file_info() {
 					else{
 						$('#prevImage').show();
 						if (bname == 'Netscape'){
-							$('#label_buttons_contrast').css('left', '440px');
+							$('#label_buttons_contrast').css('left', '465px');
 						}
-						else $('#label_buttons_contrast').css('left', '420px');
+						else $('#label_buttons_contrast').css('left', '455px');
 
 					}
                     if(this.mode=='im' || this.mode=='mt') view_ObjList = false;
