@@ -75,7 +75,7 @@ function CreatePopupBubble(pts_x,pts_y,mx,my,innerHTML,dom_attach) {
   else {
     document.getElementById(bubble_name).style.top = (top) + 'px';
   }
-  setTimeout("$('#objEnter').focus();",1);
+  // setTimeout("$('#objEnter').focus();",1);
   if (autocomplete_mode){
     addAutoComplete();
   }
@@ -223,14 +223,19 @@ function mkViewPopup(pts_x,pts_y,mx,my,anno) {
   CreatePopupBubbleCloseButton(dom_bubble,StopEditEvent);
 
   // Focus the cursor inside the box
-  $('#objEnter').select();
-  $('#objEnter').focus();
+  // $('#objEnter').select();
+  // $('#objEnter').focus();
 }
 
 function CloseQueryPopup() {
   wait_for_input = 0;
   if (object_choices != '...') {
-    $('#objEnter').select2('close');
+    // ensure we actually made the enter box a select2 because things will break
+    // if we try to close not a select2
+    var obj = $('#objEnter');
+    if (obj.hasClass("select2-hidden-accessible")) {
+      obj.select2('close');
+    }
   }
   $('#myPopup').remove();
 }
@@ -238,7 +243,12 @@ function CloseQueryPopup() {
 function CloseEditPopup() {
   edit_popup_open = 0;
   if (object_choices != '...') {
-    $('#objEnter').select2('close');
+    // ensure we actually made the enter box a select2 because things will break
+    // if we try to close not a select2
+    var obj = $('#objEnter');
+    if (obj.hasClass("select2-hidden-accessible")) {
+      obj.select2('close');
+    }
   }
   $('#myPopup').remove();
 }
