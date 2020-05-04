@@ -265,7 +265,7 @@ function SetAllAnnotationsArray() {
 
 /** Annotation file does not exist, so load template. */
 function LoadAnnotation404(jqXHR,textStatus,errorThrown) {
-  alert("annotations could not be loaded");
+  alert("Annotation data could not be loaded. Please close the tool, then attempt to open the annotation again.");
   /*
   if(jqXHR.status==404) 
     ReadXML(main_media.GetFileInfo().GetTemplatePath(),LoadTemplateSuccess,LoadTemplate404);
