@@ -153,7 +153,10 @@ function image(id) {
         var was_at_min = this.im_ratio == this.browser_im_ratio;
 
         if(amt=='fitted') {
-                this.im_ratio = this.browser_im_ratio;
+                this.SetImageDimensions();
+                this.ScaleFrame();
+                return;
+                //this.im_ratio = this.browser_im_ratio;
         } else {
                 this.im_ratio = this.im_ratio * amt;
         }

@@ -345,6 +345,7 @@ function FinishStartup() {
   $('#query_canvas_div').attr("onmousedown","javascript:event.preventDefault();WaitForInput();return false;");
   $('#query_canvas_div').attr("onmouseup","javascript:event.preventDefault();");
   $('#query_canvas_div').attr("oncontextmenu","javascript:return false;");
+  $('body').attr("onresize","javascript:main_media.Zoom(1);");
 
   // Initialize the username:
   //initUserName();
