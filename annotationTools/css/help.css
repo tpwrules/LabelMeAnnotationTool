@@ -17,8 +17,10 @@
     transform: translate(-50%, -50%);
     background:white;
     font-size:13px;
-    width: 80%;
+    width: calc(100% - 75px);
     max-width:550px;
+    max-height:calc(100% - 75px);
+    overflow:scroll;
 }
 
 #help_display ul, h2 {
